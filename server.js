@@ -5,6 +5,7 @@ const dotenv=require('dotenv')
 const colors=require('colors')
 dotenv.config()
 // rest object 
+connectDb()
 const app=express()
 // middleware
 app.use(morgan('dev'))
