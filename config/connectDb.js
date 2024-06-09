@@ -11,3 +11,7 @@ console.log(`Server Runnig ON ${mongoose.connection.host}`.bgCyan.white)
 
     }
 }
+
+module.exports=connectDb
+
+
