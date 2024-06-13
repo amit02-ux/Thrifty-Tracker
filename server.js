@@ -13,11 +13,12 @@ const app=express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
-app.get('/',(req,res)=>{
-    res.send("<h1>Hello from amit</h1>"
+// app.get('/',(req,res)=>{
+//     res.send("<h1>Hello from amit</h1>"
 
-    )
-})
+//     )
+// })
+app.use("api/v1/users",require("./routes/userRoutes"))
 const PORT=8080|| process.env.PORT
 //listen
 app.listen(PORT,()=>{
