@@ -18,10 +18,11 @@ app.use(cors())
 
 //     )
 // })
-app.use("api/v1/users",require("./routes/userRoutes"))
+app.use('/api/v1/users',require('./routes/userRoutes'))
 const PORT=8080|| process.env.PORT
 //listen
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${
         PORT}`)
 })
+

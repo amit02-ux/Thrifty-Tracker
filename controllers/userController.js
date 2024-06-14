@@ -1,10 +1,12 @@
 const userModel=require("../models/userModel");
-const loginController =async()=>{
+const loginController =async(req,res)=>{
     try{
+        console.log("hell");
         const {email,password}=req.body;
         const user=await userModel.findOne({email,password});
         if(!user){
-            return res.status(404).send({"User not found"});
+            return res.status(404).send({ message: "User not found" });
+
         }
         res.status(200).json({
             success:true,
@@ -14,13 +16,18 @@ const loginController =async()=>{
 
     }
     catch(error){
+        console.log("hello");
         res.status(400).json({
             success:false,
             error,
+
         })
+
     }
+
 }
-const registerController = async()=>{
+const registerController = async(req,res)=>{
+    console.log("hello");
     try{
         const newUser=new userModel(req.body);
         await newUser.save()
