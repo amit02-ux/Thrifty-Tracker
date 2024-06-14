@@ -34,14 +34,14 @@ const Register = () => {
  <Form Layout='vertical' onFinish={submitHandler}>
     <h1>Register Page</h1>
     <Form.Item label="Name" name="name">
-        <Input type='name'/>
-    </Form.Item>
-    <Form.Item label="Email" name="email">
-        <Input type='email'/>
-    </Form.Item>
-    <Form.Item label="Password" name="password">
-        <Input type='password'/>
-    </Form.Item>
+  <Input type="text"  placeholder="name"required/>
+</Form.Item>
+<Form.Item label="Email" name="email">
+  <Input type="email"  placeholder="email"required/>
+</Form.Item>
+<Form.Item label="Password" name="password">
+  <Input type="password" placeholder="password"required/>
+</Form.Item>
     <div className='d-flex justify-content-between'> 
         <Link to='/login'>Already register? Click here to login</Link>
         <button className='btn btn-primary'>Register</button>

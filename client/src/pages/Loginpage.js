@@ -17,7 +17,15 @@ const Loginpage = () => {
           const {data}=await axios.post("/users/login",values)
           setLoading(false)
           message.success("Login successfull")
-          localStorage.setItem('user',JSON.stringify({...data,Password:''}))
+          console.log(data);
+          console.log(data.password)
+          // console.log(values.email);
+   
+          // localStorage.setItem('user',JSON.stringify(dt));
+          localStorage.setItem('user', JSON.stringify({...data, password: ''}))
+
+         
+          // console.log(dt)
           navigate('/')
 
 
@@ -35,16 +43,28 @@ const Loginpage = () => {
   <Form Layout='vertical' onFinish={submitHandler}>
      <h1>Login Page</h1>
     
-     <Form.Item label="Email" name="email">
-         <Input type='email'/>
+     {/* <Form.Item label="Email" name="email">
+         <Input type='email' placeholder="email"/>
      </Form.Item>
      <Form.Item label="Password" name="password">
-         <Input type='password'/>
+     <Input type="password" placeholder="password"required/>
      </Form.Item>
      <div className='d-flex justify-content-between'> 
          <Link to='/register'>If not  registered? Click here to register</Link>
          <button className='btn btn-primary'>Login</button>
-     </div>
+     </div> */}
+     <Form.Item label="Email" name="email">
+  <Input type="email"  placeholder="email"required/>
+</Form.Item>
+<Form.Item label="Password" name="password">
+  <Input type="password" placeholder="password"required/>
+</Form.Item>
+<div>
+<Link to="/register" className="m-4">You have to resister first</Link>
+<button className="btn btn-primary" type="submit">
+  Login
+</button>
+</div>
   </Form>
     </div>
     </>

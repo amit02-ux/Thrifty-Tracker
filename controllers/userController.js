@@ -36,6 +36,7 @@ const registerController = async(req,res)=>{
             newUser
         })
 
+        
     }
     catch(error){
         res.status(400).json({
