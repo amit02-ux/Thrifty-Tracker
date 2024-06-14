@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 
 import {Form,Input,message} from 'antd'
 import { Link,useNavigate } from 'react-router-dom'
@@ -16,17 +16,21 @@ const Loginpage = () => {
           setLoading(true)
           const {data}=await axios.post("/users/login",values)
           setLoading(false)
-          message.success("Login successfull")
-          console.log(data);
-          console.log(data.password)
+          message.success("Login successfully")
+          // console.log(data);
+          // console.log(data.password)
           // console.log(values.email);
    
           // localStorage.setItem('user',JSON.stringify(dt));
-          localStorage.setItem('user', JSON.stringify({...data, password: ''}))
+          localStorage.setItem('user', JSON.stringify({...data.user, password: ''}))
 
          
           // console.log(dt)
-          navigate('/')
+      
+          // message.success("Logout successfully")
+          const myTimeout = setTimeout(() => {
+            navigate('/')
+        }, 400); 
 
 
         }
@@ -36,6 +40,12 @@ const Loginpage = () => {
         }
 
     }
+    useEffect(()=>{
+      if(localStorage.getItem("user")){
+        navigate('/');
+      }
+
+    },[navigate])
   return (
     <>
     <div className='login_page'>
@@ -47,6 +57,7 @@ const Loginpage = () => {
          <Input type='email' placeholder="email"/>
      </Form.Item>
      <Form.Item label="Password" name="password">
+
      <Input type="password" placeholder="password"required/>
      </Form.Item>
      <div className='d-flex justify-content-between'> 
