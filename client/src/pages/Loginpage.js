@@ -17,6 +17,7 @@ const Loginpage = () => {
           const {data}=await axios.post("/users/login",values)
           setLoading(false)
           message.success("Login successfully")
+          console.log("Amit is login successfully")
           // console.log(data);
           // console.log(data.password)
           // console.log(values.email);
@@ -71,7 +72,7 @@ const Loginpage = () => {
   <Input type="password" placeholder="password"required/>
 </Form.Item>
 <div>
-<Link to="/register" className="m-4">You have to resister first</Link>
+<Link to="/register" className="m-4" color='black' t>You have to resister first</Link>
 <button className="btn btn-primary" type="submit">
   Login
 </button>

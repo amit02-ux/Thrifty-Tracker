@@ -16,7 +16,7 @@ const loginController =async(req,res)=>{
 
     }
     catch(error){
-        console.log("hello");
+       
         res.status(400).json({
             success:false,
             error,
