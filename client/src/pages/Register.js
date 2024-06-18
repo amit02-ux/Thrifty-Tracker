@@ -40,13 +40,13 @@ const Register = () => {
  <Form Layout='vertical' onFinish={submitHandler}>
     <h1>Register Page</h1>
     <Form.Item label="Name" name="name">
-  <Input type="text"  placeholder="name"required/>
+  <Input type="text"  placeholder="name"  rules={[{ required: true, message: 'Please enter a name!' }]}/>
 </Form.Item>
 <Form.Item label="Email" name="email">
-  <Input type="email"  placeholder="email"required/>
+  <Input type="email"  placeholder="email"  rules={[{ required: true, message: 'Please enter a email!' }]}/>
 </Form.Item>
 <Form.Item label="Password" name="password">
-  <Input type="password" placeholder="password"required/>
+  <Input type="password" placeholder="password"  rules={[{ required: true, message: 'Please enter a password!' }]}/>
 </Form.Item>
     <div className='d-flex justify-content-between'> 
         <Link to='/login'>Already register? Click here to login</Link>
