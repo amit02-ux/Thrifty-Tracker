@@ -21,7 +21,7 @@ app.use(cors())
 // User
 app.use('/api/v1/users',require('./routes/userRoutes'))
 // Transaction
-app.use('api/v1/transactions',require('./routes/transactionRoutes'))
+app.use('/api/v1/transactions',require('./routes/transactionRoutes'))
 
 
 const PORT=8080|| process.env.PORT

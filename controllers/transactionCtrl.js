@@ -1,8 +1,8 @@
-const transactionModel=require('../models/transactionModel')
+const transModel=require('../models/transModel')
 
 const getTransactions=async(req,res)=>{
     try{
-const transactions =await transactionModel.find({userid:req.body.userid})
+const transactions =await transModel.find({userid:req.body.userid})
 res.status(201).json(transactions)
 
     }
@@ -14,7 +14,8 @@ res.status(201).json(transactions)
 }
 const addTransaction=async(req,res)=>{
     try{
-        const newTransaction=new transactionModel(req.body)
+        const newTransaction=new transModel(req.body)
+       
         await newTransaction.save();
         res.status(201).send("Transaction created")
 

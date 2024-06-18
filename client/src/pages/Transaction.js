@@ -4,17 +4,20 @@ import { Modal, Form, Input, Select,message } from "antd";
 import axios from "axios";
 import Spinner from '../components/Spinner'
 
-const Transaction = (values) => {
+const Transaction = () => {
   const [loading,setLoading]=useState(false)
   const [showModal, setshowModal] = useState(false);
   const HandleSubmit = async(values) => {
     try{
       const user=JSON.parse(localStorage.getItem('user'));
-      console.log(user)
+      // console.log(user)
       setLoading(true);
-      await axios.post("/transactions/Add_tran",{userid:user._id,...values})
+    
       
+      await axios.post("/transactions/Add_tran",{userid:user._id,...values})
+      // const {data}=await axios.post("/users/login",values)
       setLoading(false);
+     
     
       message.success("Transaction added successfully")
       setshowModal(false);
@@ -160,61 +163,101 @@ const Transaction = (values) => {
         onCancel={() => setshowModal(false)}
         footer={false}
       >
-        <Form Layout="vertical" onFinish={HandleSubmit}>
-          <Form.Item label="Amount" name="amout">
-            <Input type="text" placeholder="amount" required />
-          </Form.Item>
-          <Form.Item label="Type" name="type">
-            <Select>
-              <Select.Option values="income">Income</Select.Option>
-              <Select.Option values="expense">Expense</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Category" name="category">
-            <Select>
-              <Select.Option values="salary">Salary</Select.Option>
-              <Select.Option values="project">Project</Select.Option>
-              <Select.Option values="house-rent">House-Rent</Select.Option>
-              <Select.Option values="trading">Trading</Select.Option>
-              <Select.Option values="food">Food</Select.Option>
-              <Select.Option values="fee">Fee</Select.Option>
-              <Select.Option values="bill">Bill</Select.Option>
-              <Select.Option values="shopping">Shopping</Select.Option>
-              <Select.Option values="movie">Movie</Select.Option>
-              <Select.Option values="medical">Medical</Select.Option>
-              <Select.Option values="tax">Tax</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Mode-of-transaction" name="mode">
-            <Select>
-              <Select.Option values="cash">Cash</Select.Option>
-              <Select.Option values="paytm">Paytm</Select.Option>
-              <Select.Option values="phone-pay">Phone-Pay</Select.Option>
-              <Select.Option values="google-pay">Google-pay</Select.Option>
-              <Select.Option values="net-banking">Net-Banking</Select.Option>
-              <Select.Option values="credit-card">Credit-card</Select.Option>
-              <Select.Option values="debit-card">Debit-card</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="References" name="references">
-            <Input type="text" placeholder="references" required />
-          </Form.Item>
-          <Form.Item label="Description" name="description">
-            <Input type="text" placeholder="description" required />
-          </Form.Item>
-          <Form.Item label="Date" name="date">
-            <Input type="date" placeholder="date" required />
-          </Form.Item>
-          <Form.Item label="Time" name="time">
-            <Input type="time" placeholder="time" required />
-          </Form.Item>
+       
+         <Form layout="vertical" onFinish={HandleSubmit}>
+      <Form.Item
+        label="Amount"
+        name="amount" // Corrected spelling
+        rules={[{ required: true, message: 'Please enter an amount!' }]}
+      >
+        <Input type="number" placeholder="amount" />
+      </Form.Item>
+      
+      <Form.Item
+        label="Type"
+        name="type"
+        rules={[{ required: true, message: 'Please select a type!' }]}
+      >
+        <Select>
+          <Select.Option value="income">Income</Select.Option>
+          <Select.Option value="expense">Expense</Select.Option>
+        </Select>
+      </Form.Item>
+      
+      <Form.Item
+        label="Category"
+        name="category"
+        rules={[{ required: true, message: 'Please select a category!' }]}
+      >
+        <Select>
+          <Select.Option value="salary">Salary</Select.Option>
+          <Select.Option value="project">Project</Select.Option>
+          <Select.Option value="house-rent">House-Rent</Select.Option>
+          <Select.Option value="trading">Trading</Select.Option>
+          <Select.Option value="food">Food</Select.Option>
+          <Select.Option value="fee">Fee</Select.Option>
+          <Select.Option value="bill">Bill</Select.Option>
+          <Select.Option value="shopping">Shopping</Select.Option>
+          <Select.Option value="movie">Movie</Select.Option>
+          <Select.Option value="medical">Medical</Select.Option>
+          <Select.Option value="tax">Tax</Select.Option>
+        </Select>
+      </Form.Item>
+      
+      <Form.Item
+        label="Mode of Transaction"
+        name="mode"
+        rules={[{ required: true, message: 'Please select a mode!' }]}
+      >
+        <Select>
+          <Select.Option value="cash">Cash</Select.Option>
+          <Select.Option value="paytm">Paytm</Select.Option>
+          <Select.Option value="phone-pay">Phone-Pay</Select.Option>
+          <Select.Option value="google-pay">Google-pay</Select.Option>
+          <Select.Option value="net-banking">Net-Banking</Select.Option>
+          <Select.Option value="credit-card">Credit-card</Select.Option>
+          <Select.Option value="debit-card">Debit-card</Select.Option>
+        </Select>
+      </Form.Item>
+      
+      <Form.Item
+        label="References"
+        name="references"
+        rules={[{ required: true, message: 'Please enter a reference!' }]}
+      >
+        <Input type="text" placeholder="references" />
+      </Form.Item>
+      
+      <Form.Item
+        label="Description"
+        name="description"
+        rules={[{ required: true, message: 'Please enter a description!' }]}
+      >
+        <Input type="text" placeholder="description" />
+      </Form.Item>
+      
+      <Form.Item
+        label="Date"
+        name="date"
+        rules={[{ required: true, message: 'Please select a date!' }]}
+      >
+        <Input type="date" placeholder="date" />
+      </Form.Item>
+      
+      <Form.Item
+        label="Time"
+        name="time"
+        rules={[{ required: true, message: 'Please select a time!' }]}
+      >
+        <Input type="time" placeholder="time" />
+      </Form.Item>
 
-          <div className="d-flex justify-content-end">
-            <button className="btn btn-primary " type="submit">
+      <div className="d-flex justify-content-end">
+      <button className="btn btn-primary " type="submit">
               ADD
             </button>
-          </div>
-        </Form>
+      </div>
+    </Form>
       </Modal>
     </>
   );
