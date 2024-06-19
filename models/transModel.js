@@ -4,6 +4,12 @@ const transSchema=mongoose.Schema({
         type:String,
         required:[true,'user_id is required']
     },
+   
+    name:{
+        type:String,
+        required:[true,'amount is required']
+
+    },
     amount:{
         type:Number,
         required:[true,'amount is required']
@@ -32,13 +38,12 @@ const transSchema=mongoose.Schema({
         required:[true,'description is required']
     },
     date:{
-        type:String,
+        type:Date,
          required:[true,'date is required']
     },
-    time:{
-        type:String,
-        required:[true,'time is required']
-    },
+   
+    
+   
     
 },{timestamps:true})
 const transModel=mongoose.model('tranzaction',transSchema)

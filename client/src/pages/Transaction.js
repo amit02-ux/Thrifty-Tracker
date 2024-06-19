@@ -1,12 +1,101 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Link } from "react-router-dom";
-import { Modal, Form, Input, Select,message } from "antd";
+import { Modal, Form, Input, Select,message,Table } from "antd";
 import axios from "axios";
 import Spinner from '../components/Spinner'
 
 const Transaction = () => {
   const [loading,setLoading]=useState(false)
   const [showModal, setshowModal] = useState(false);
+  const [transaction,setTransaction]=useState([]);
+  const [Label,setLabel]=useState("Payied to");
+  const [type,setType]=useState("Expences");
+  const handleSelectChange=(value)=>{
+    if(value=="income")
+      setLabel("Paid-by");
+    else
+    setLabel("Paid-to")
+    console.log(Label)
+
+  }
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount',
+      
+    },
+   
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      
+    },
+    {
+      title: 'Mode-of-transaction',
+      dataIndex: 'mode',
+      
+    },
+    {
+      title: 'References',
+      dataIndex: 'references',
+      
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      
+    },
+   
+   
+    {
+      
+      title:'Action',
+        dataIndex:'action',
+        render:(text,record) =>(
+          <div className='d-flex'>
+           <button className="btn btn-primary ml-2 ml-2" onClick={getAlltransaction}>GET</button>
+           <button className="btn btn-danger ml-2 mr-2" onClick={getAlltransaction}>delete</button>
+          </div>
+        )
+      
+    },
+    
+  ];
+  const getAlltransaction=async()=>{
+    try{
+      const user=JSON.parse(localStorage.getItem('user'));
+      const r =await axios.post('/transactions/get_transaction',{userid:user._id})
+      console.log(r.data);
+      setTransaction(r.data);
+
+
+    }
+    catch(error){
+      console.log(error);
+      message.error("getting failed")
+
+    }
+  }
+  useEffect(()=>{
+    getAlltransaction();
+
+
+  },[])
   const HandleSubmit = async(values) => {
     try{
       const user=JSON.parse(localStorage.getItem('user'));
@@ -27,7 +116,7 @@ const Transaction = () => {
     catch(error){
       setLoading(false);
       console.log("amit vishwakarma")
-      message.error("gkjkljckd")
+      message.error("Add transaction failed")
 
     }
   };
@@ -88,13 +177,16 @@ const Transaction = () => {
                       </a>
                     </li>
                     <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
                       <a className="dropdown-item" href="#">
                         Annualy
                       </a>
                     </li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Custom
+                      </a>
+                    </li>
+                   
                   </ul>
                 </li>
 
@@ -111,22 +203,15 @@ const Transaction = () => {
                   <ul className="dropdown-menu">
                     <li>
                       <a className="dropdown-item" href="#">
-                        Action
+                        Income
                       </a>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">
-                        Another action
+                        Expences
                       </a>
                     </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </li>
+                    
                   </ul>
                 </li>
               </ul>
@@ -166,6 +251,13 @@ const Transaction = () => {
        
          <Form layout="vertical" onFinish={HandleSubmit}>
       <Form.Item
+        label={Label}
+        name="name" // Corrected spelling
+        rules={[{ required: true, message: 'Please enter an name!' }]}
+      >
+        <Input type="text" placeholder="name" />
+      </Form.Item>
+      <Form.Item
         label="Amount"
         name="amount" // Corrected spelling
         rules={[{ required: true, message: 'Please enter an amount!' }]}
@@ -177,8 +269,9 @@ const Transaction = () => {
         label="Type"
         name="type"
         rules={[{ required: true, message: 'Please select a type!' }]}
+        
       >
-        <Select>
+        <Select onChange={handleSelectChange}>
           <Select.Option value="income">Income</Select.Option>
           <Select.Option value="expense">Expense</Select.Option>
         </Select>
@@ -244,14 +337,7 @@ const Transaction = () => {
         <Input type="date" placeholder="date" />
       </Form.Item>
       
-      <Form.Item
-        label="Time"
-        name="time"
-        rules={[{ required: true, message: 'Please select a time!' }]}
-      >
-        <Input type="time" placeholder="time" />
-      </Form.Item>
-
+    
       <div className="d-flex justify-content-end">
       <button className="btn btn-primary " type="submit">
               ADD
@@ -259,6 +345,10 @@ const Transaction = () => {
       </div>
     </Form>
       </Modal>
+      <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
+    
+      <Table columns={columns} dataSource={transaction} />
+ 
     </>
   );
 };

@@ -1,8 +1,11 @@
 const transModel=require('../models/transModel')
 
+
 const getTransactions=async(req,res)=>{
     try{
 const transactions =await transModel.find({userid:req.body.userid})
+console.log(transactions)
+
 res.status(201).json(transactions)
 
     }
