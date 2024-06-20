@@ -1,17 +1,37 @@
 import React, { useState ,useEffect} from "react";
 import { Link } from "react-router-dom";
-import { Modal, Form, Input, Select,message,Table } from "antd";
+import { Modal, Form, Input, Select,message,Table ,DatePicker,Space} from "antd";
 import axios from "axios";
 import Spinner from '../components/Spinner'
+import moment from "moment";
+const {RangePicker}=DatePicker
 
 const Transaction = () => {
   const [loading,setLoading]=useState(false)
   const [showModal, setshowModal] = useState(false);
+  const[add,setAdd]=useState(false)
   const [transaction,setTransaction]=useState([]);
   const [Label,setLabel]=useState("Payied to");
-  const [type,setType]=useState("Expences");
+  const [type,setType]=useState("All");
+  const [frequency,setFrequency]=useState('7');
+  const [selecteddate,setSelecteddate]=useState([null,null])
+  const [sortedInfo, setSortedInfo] = useState({});
+  const deleteAlltransaction=(value)=>{
+    // console.log(value)
+    const id=value._id;
+    console.log(id);
+    const newtransaction=transaction.filter((record)=>record._id!=id)
+    setTransaction(newtransaction)
+
+  }
+  const editAlltransaction=(value)=>{
+    // console.log(value)
+    const id=value._id;
+    console.log(id);
+  }
   const handleSelectChange=(value)=>{
-    if(value=="income")
+    // setType(value)
+    if(type=="income")
       setLabel("Paid-by");
     else
     setLabel("Paid-to")
@@ -22,7 +42,9 @@ const Transaction = () => {
     {
       title: 'Date',
       dataIndex: 'date',
-      
+      render:(text,record) =>(
+        <span>{moment(text).format('YYYY-MM-DD')}</span>
+      )
     },
     {
       title: 'Name',
@@ -32,6 +54,9 @@ const Transaction = () => {
     {
       title: 'Amount',
       dataIndex: 'amount',
+      key: 'amount',
+      sorter: (a, b) => a.amount - b.amount,
+      sortDirections: ['ascend', 'descend'],
       
     },
    
@@ -68,21 +93,22 @@ const Transaction = () => {
         dataIndex:'action',
         render:(text,record) =>(
           <div className='d-flex'>
-           <button className="btn btn-primary ml-2 ml-2" onClick={getAlltransaction}>GET</button>
-           <button className="btn btn-danger ml-2 mr-2" onClick={getAlltransaction}>delete</button>
+           <button className="btn btn-primary ml-2 ml-2" onClick={()=>editAlltransaction(record)}>Edit</button>
+           <button className="btn btn-danger ml-2 mr-2" onClick={()=>deleteAlltransaction(record)}>Delete</button>
           </div>
         )
       
     },
     
   ];
+  
   const getAlltransaction=async()=>{
     try{
       const user=JSON.parse(localStorage.getItem('user'));
-      const r =await axios.post('/transactions/get_transaction',{userid:user._id})
+      const r =await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
       console.log(r.data);
       setTransaction(r.data);
-
+      // setFrequency('365')
 
     }
     catch(error){
@@ -95,7 +121,8 @@ const Transaction = () => {
     getAlltransaction();
 
 
-  },[])
+  },[add,frequency,type,selecteddate])
+  
   const HandleSubmit = async(values) => {
     try{
       const user=JSON.parse(localStorage.getItem('user'));
@@ -110,6 +137,7 @@ const Transaction = () => {
     
       message.success("Transaction added successfully")
       setshowModal(false);
+      setAdd(true)
 
 
     }
@@ -122,6 +150,7 @@ const Transaction = () => {
   };
   return (
     <>
+   
       <div>
       {loading&&<Spinner/>}
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -167,26 +196,32 @@ const Transaction = () => {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
-                        Weekly
+                      <a className="dropdown-item" href="#"
+                      onClick={()=>setFrequency('7')}
+                      >
+                      Last 1  Week
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
-                        Monthly
+                      <a className="dropdown-item" href="#"
+                        onClick={()=>setFrequency('30')}>
+                     Last 1  Month
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
-                        Annualy
+                      <a className="dropdown-item" href="#"
+                        onClick={()=>setFrequency('365')}
+                      >
+                       Last 1 Year
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#" onClick={()=>setFrequency('custom')} >
                         Custom
                       </a>
+                     
                     </li>
-                   
+                    
                   </ul>
                 </li>
 
@@ -198,16 +233,26 @@ const Transaction = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Category
+                    Type
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#"
+                        onClick={()=>setType('All')}>
+                        All
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="#"
+                        onClick={()=>setType('income')}>
+                      
                         Income
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#"
+                        onClick={()=>setType('expences')}
+                      >
                         Expences
                       </a>
                     </li>
@@ -215,6 +260,9 @@ const Transaction = () => {
                   </ul>
                 </li>
               </ul>
+             <span>
+             {frequency==='custom'&&<RangePicker value={selecteddate} onChange={(values)=>selecteddate(values)}/>}
+             </span>
               <div className="search mr-2">
                 <form className="d-flex" role="search">
                   <input
@@ -347,7 +395,7 @@ const Transaction = () => {
       </Modal>
       <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
     
-      <Table columns={columns} dataSource={transaction} />
+      <Table columns={columns} dataSource={transaction}  sortedInfo={sortedInfo} />
  
     </>
   );
