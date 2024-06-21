@@ -1,30 +1,68 @@
 const transModel=require('../models/transModel')
 
+
 const moment=require('moment')
 
 const getTransactions=async(req,res)=>{
-    const {frequency,type,range,selecteddate}=req.body;
+    const {frequency,type,range,selecteddate,date,name,amount,category,mode,references}=req.body;
+    // console.log(selecteddate)
     try{
-const transactions =await transModel.find({
+        const transactions=null;
 
-...(frequency!=='custom'?{
-    date:{
-        $gt:moment().subtract(Number(frequency),"d").toDate(),
-    }
-,
-}:{
-    date:{
-        $gt:selecteddate[0],
-        $lt:selecteddate[1],
-    }
-}),
-...(type!='All'&&{type})
+        if(Search){
+            // const [date,name,amount,mode,category,references]=req.body;
+            // const transaction=null;
+            console.log("Search server")
+            if(date){
+                transactions=await transModel.find({ date:date });
+            }
+            if(name){
+            transactions=await transModel.find({name:name });
+    
+            }
+            if(amount){
+                transactions=await transModel.find({amount:{
+                    $gte:amount
+                }})
+                
+    
+            }
+            if(mode){
+                transactions=await transModel.find({mode:mode});
+            }
+            if(category){
+                transactions=await transModel.find({category:category})
+            }
+            if(references){
+                transactions =await transModel.find({ references:references})
+    
+            }
+    
 
-   ,userid:req.body.userid,
- 
-   
 
-})
+        }
+ else{
+    transactions =await transModel.find({
+
+        ...(frequency!=='custom'?{
+            date:{
+                $gt:moment().subtract(Number(frequency),"d").toDate(),
+            }
+        ,
+        }:{
+            date:{
+                $gt:selecteddate[0],
+                $lt:selecteddate[1],
+            }
+        }),
+        ...(type!='All'&&{type})
+        
+           ,userid:req.body.userid,
+         
+           
+        
+        })
+ }
 console.log(transactions)
 console.log(type),
   
@@ -56,4 +94,70 @@ const addTransaction=async(req,res)=>{
     }
 
 }
-module.exports={getTransactions,addTransaction}
+const editTransactions=async(req,res)=>{
+    try{
+        await transModel.findOneAndUpdate({_id:req.body.transactionsId},req.body.payload);
+        res.status(200).send("Edit Successfully")
+
+    }
+    catch(error){
+        console.log(error)
+        res.status(400).json(error)
+    }
+}
+const deletTransactions=async(req,res)=>{
+
+    try{
+        const transactionId=req.body.transactionId;
+        const deletedTransaction = await transModel.findOneAndDelete({ _id: transactionId });
+        if(deletedTransaction){
+            res.status(200).send("Deleted successfully");
+        }
+        else{
+            res.status(400).send("Transaction not found")
+        }
+        
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
+const searchTransactions=async(req,res)=>{
+    try{
+        const [date,name,amount,mode,category,references]=req.body;
+        const transaction=null;
+        if(date){
+            transaction=await transModel.find({ date:date });
+        }
+        if(name){
+        transaction=await transModel.find({name:name });
+
+        }
+        if(amount){
+            transaction=await transModel.find({amount:{
+                $gte:amount
+            }})
+            
+
+        }
+        if(mode){
+            transaction=await transModel.find({mode:mode});
+        }
+        if(category){
+            transaction=await transModel.find({category:category})
+        }
+        if(references){
+            transaction =await transModel.find({ references:references})
+
+        }
+
+
+    }
+    catch(error){
+        console.log(error);
+        res.status.json(error)
+    }
+
+}
+module.exports={getTransactions,addTransaction,editTransactions,deletTransactions}

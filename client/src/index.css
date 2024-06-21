@@ -48,3 +48,7 @@
       font-size: 1.5rem; /* Further adjust font size for very small screens */
   }
 }
+.custom-margin{
+  margin-left: 1px;
+  /* margin-right: 1px; */
+}

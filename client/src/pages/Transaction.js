@@ -4,6 +4,8 @@ import { Modal, Form, Input, Select,message,Table ,DatePicker,Space} from "antd"
 import axios from "axios";
 import Spinner from '../components/Spinner'
 import moment from "moment";
+import { EditTwoTone ,EditOutlined,FormOutlined,DeleteOutlined  } from '@ant-design/icons';
+
 const {RangePicker}=DatePicker
 
 const Transaction = () => {
@@ -16,21 +18,46 @@ const Transaction = () => {
   const [frequency,setFrequency]=useState('7');
   const [selecteddate,setSelecteddate]=useState([null,null])
   const [sortedInfo, setSortedInfo] = useState({});
-  const deleteAlltransaction=(value)=>{
-    // console.log(value)
-    const id=value._id;
-    console.log(id);
-    const newtransaction=transaction.filter((record)=>record._id!=id)
-    setTransaction(newtransaction)
+  const [edit,setEdit]=useState(null)
+  const [delet,setDelete]=useState(false)
+  const [searchInput, setSearchInput] = useState('');
+  const [Search,setSearch]=useState(false)
+  
+  const deleteHandler=async(value)=>{
+  const transactionId =value;
+  // console.log(value)
+  setLoading(true);
+  setDelete(true)
+  try{
+    if(!transactionId){
+      message.error("Transaction not found");
+      setLoading(false);
+      setDelete(false)
+    }
+    else{
+      const det = await axios.post('/transactions/delet_transaction',{transactionId})
+     
 
+      if(det){
+        message.success("Deleted successfully")
+      }
+      else{
+        message.error("Something wrong with deletation")
+      }
+      setLoading(false);
+      setDelete(false)
+    }
   }
-  const editAlltransaction=(value)=>{
-    // console.log(value)
-    const id=value._id;
-    console.log(id);
+ catch(error){
+  setLoading(false)
+  setDelete(false)
+  console.log(error)
+  message.status(400).send("Deletation failed")
+ }
   }
-  const handleSelectChange=(value)=>{
-    // setType(value)
+ 
+  const handleSelectChange=async(value)=>{
+    setType(value)
     if(type=="income")
       setLabel("Paid-by");
     else
@@ -40,8 +67,15 @@ const Transaction = () => {
   }
   const columns = [
     {
+     
       title: 'Date',
       dataIndex: 'date',
+      key:'date',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+      sortDirections: ['ascend', 'descend'],
+      
+      
       render:(text,record) =>(
         <span>{moment(text).format('YYYY-MM-DD')}</span>
       )
@@ -49,12 +83,18 @@ const Transaction = () => {
     {
       title: 'Name',
       dataIndex: 'name',
+      key:'name',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend'],
+      
       
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      defaultSortOrder: 'ascend',
       sorter: (a, b) => a.amount - b.amount,
       sortDirections: ['ascend', 'descend'],
       
@@ -93,8 +133,10 @@ const Transaction = () => {
         dataIndex:'action',
         render:(text,record) =>(
           <div className='d-flex'>
-           <button className="btn btn-primary ml-2 ml-2" onClick={()=>editAlltransaction(record)}>Edit</button>
-           <button className="btn btn-danger ml-2 mr-2" onClick={()=>deleteAlltransaction(record)}>Delete</button>
+       
+           <button className="btn btn-primary  custom-margin"  onClick={()=>{setEdit(record);setshowModal(true)}}><FormOutlined/></button>
+           <button className="btn btn-danger  custom-margin" onClick={()=>deleteHandler(record._id)}><DeleteOutlined/></button>
+           
           </div>
         )
       
@@ -103,6 +145,7 @@ const Transaction = () => {
   ];
   
   const getAlltransaction=async()=>{
+    // console.log(edit)
     try{
       const user=JSON.parse(localStorage.getItem('user'));
       const r =await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
@@ -121,12 +164,75 @@ const Transaction = () => {
     getAlltransaction();
 
 
-  },[add,frequency,type,selecteddate])
-  
+  },[add,frequency,type,selecteddate,edit,delet,Search])
+
+
+
+//Handle for input change in search  
+  const handleInputChange = async(event) => {
+    console.log(event.target.value)
+    setSearchInput(event.target.value);
+  };
+  //Seach handeler
+  const searchHandle=async(event)=>{
+    event.preventDefault();
+    // event.preventDefault(); // Prevent default form submission
+    // setSearch(true);
+    setLoading(true)
+    console.log('Search input:', searchInput)
+    try{
+      if(!searchInput){
+        setSearch(false)
+        setLoading(false)
+        message.error("Fill the search criteria")
+       
+      }
+      else{
+      // await axios.post('/transactions/get_transaction',{searchInput})
+      // getAlltransaction();
+      setSearch(false)
+      setLoading(false)
+
+      }
+
+    }
+    catch(error){
+      console.log(error);
+      message.error("Searching Failed");
+
+    }
+
+    
+
+  }
   const HandleSubmit = async(values) => {
+    console.log(values)
     try{
       const user=JSON.parse(localStorage.getItem('user'));
       // console.log(user)
+    
+     if(edit){
+      setLoading(true);
+    
+      
+      await axios.post("/transactions/edit_transaction",{
+        payload:{...values,
+          userid:user._id
+          
+        },
+        transactionsId:edit._id
+      })
+      // const {data}=await axios.post("/users/login",values)
+      setLoading(false);
+     
+    
+
+      message.success("Edit successfully")
+      setshowModal(false);
+      setEdit(null)
+
+     }
+     else{
       setLoading(true);
     
       
@@ -139,6 +245,7 @@ const Transaction = () => {
       setshowModal(false);
       setAdd(true)
 
+     }
 
     }
     catch(error){
@@ -251,7 +358,7 @@ const Transaction = () => {
                     </li>
                     <li>
                       <a className="dropdown-item" href="#"
-                        onClick={()=>setType('expences')}
+                        onClick={()=>setType('expense')}
                       >
                         Expences
                       </a>
@@ -261,15 +368,17 @@ const Transaction = () => {
                 </li>
               </ul>
              <span>
-             {frequency==='custom'&&<RangePicker value={selecteddate} onChange={(values)=>selecteddate(values)}/>}
+             {frequency==='custom'&&<RangePicker value={selecteddate} onChange={(values)=>setSelecteddate(values)}/>}
              </span>
               <div className="search mr-2">
-                <form className="d-flex" role="search">
+                <form className="d-flex" role="search" onSubmit={searchHandle}>
                   <input
                     className="form-control me-2"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    value={searchInput}
+                    onChange={handleInputChange}
                   />
                   <button className="btn btn-outline-success" type="submit">
                     Search
@@ -291,13 +400,14 @@ const Transaction = () => {
         </nav>
       </div>
       <Modal
-        title="Add Transaction"
+        title={edit?"Edit-Transaction":"Add-transaction"}
         open={showModal}
-        onCancel={() => setshowModal(false)}
+        onCancel={() => {setEdit(null);setshowModal(false);}}
         footer={false}
       >
+        
        
-         <Form layout="vertical" onFinish={HandleSubmit}>
+         <Form layout="vertical" onFinish={HandleSubmit} initialValues={edit}>
       <Form.Item
         label={Label}
         name="name" // Corrected spelling
@@ -387,14 +497,14 @@ const Transaction = () => {
       
     
       <div className="d-flex justify-content-end">
-      <button className="btn btn-primary " type="submit">
+      <button className="btn btn-primary " type="submit" >
               ADD
             </button>
       </div>
     </Form>
       </Modal>
-      <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
-    
+      {/* <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
+     */}
       <Table columns={columns} dataSource={transaction}  sortedInfo={sortedInfo} />
  
     </>
