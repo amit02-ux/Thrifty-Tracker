@@ -4,45 +4,18 @@ const transModel=require('../models/transModel')
 const moment=require('moment')
 
 const getTransactions=async(req,res)=>{
-    const {frequency,type,range,selecteddate,date,name,amount,category,mode,references}=req.body;
+    const {frequency,type,selecteddate}=req.body;
     // console.log(selecteddate)
+
+
     try{
-        const transactions=null;
+        
+ 
 
-        if(Search){
-            // const [date,name,amount,mode,category,references]=req.body;
-            // const transaction=null;
-            console.log("Search server")
-            if(date){
-                transactions=await transModel.find({ date:date });
-            }
-            if(name){
-            transactions=await transModel.find({name:name });
+       
+ 
     
-            }
-            if(amount){
-                transactions=await transModel.find({amount:{
-                    $gte:amount
-                }})
-                
-    
-            }
-            if(mode){
-                transactions=await transModel.find({mode:mode});
-            }
-            if(category){
-                transactions=await transModel.find({category:category})
-            }
-            if(references){
-                transactions =await transModel.find({ references:references})
-    
-            }
-    
-
-
-        }
- else{
-    transactions =await transModel.find({
+  const  transactions =await transModel.find({
 
         ...(frequency!=='custom'?{
             date:{
@@ -62,7 +35,7 @@ const getTransactions=async(req,res)=>{
            
         
         })
- }
+ 
 console.log(transactions)
 console.log(type),
   

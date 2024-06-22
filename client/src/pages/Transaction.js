@@ -21,7 +21,8 @@ const Transaction = () => {
   const [edit,setEdit]=useState(null)
   const [delet,setDelete]=useState(false)
   const [searchInput, setSearchInput] = useState('');
-  const [Search,setSearch]=useState(false)
+  const [search,setSearch]=useState(false)
+  const [type1,setType1]=useState(null)
   
   const deleteHandler=async(value)=>{
   const transactionId =value;
@@ -147,11 +148,38 @@ const Transaction = () => {
   const getAlltransaction=async()=>{
     // console.log(edit)
     try{
+      console.log('Search input:', searchInput)
       const user=JSON.parse(localStorage.getItem('user'));
-      const r =await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
-      console.log(r.data);
-      setTransaction(r.data);
+      const response=await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
+      console.log(response.data);
+      let res1=response.data;
+        switch (type1) {
+          case 'date':
+             res1 = response.data.filter(transaction => {
+              const transactionDate = new Date(transaction.date).toISOString().split('T')[0]; // Format date to YYYY-MM-DD
+              return transactionDate === searchInput;
+          });
+          
+          break;
+             
+         case 'number':
+          res1=response.data.filter(transaction=>{
+            return transaction.amount==searchInput;
+
+         })
+        break;
+        case 'string':
+          res1=response.data.filter(transaction=>{
+            return (transaction.name==searchInput||transaction.category==searchInput||transaction.mode==searchInput||transaction.references==searchInput||transaction.description==searchInput)
+          })
+         break;
+      
+      }
+      setTransaction(res1);
       // setFrequency('365')
+      setSearch(false)
+      setLoading(false)
+
 
     }
     catch(error){
@@ -164,36 +192,68 @@ const Transaction = () => {
     getAlltransaction();
 
 
-  },[add,frequency,type,selecteddate,edit,delet,Search])
+  },[add,frequency,type,selecteddate,edit,delet,search])
+
+// Function to infer the type of input
+  function inferType(input) {
+    if (!isNaN(input)) {
+        return 'number';
+    } else if (!isNaN(Date.parse(input))) {
+        return 'date';
+    } else {
+        return 'string';
+    }
+}
 
 
+// Function to transform input to match data schema
+function transformInput(input) {
+  switch (type1) {
+      case 'date':
+          const date = new Date(input);
+          return date.toISOString().split('T')[0]; // example: convert date to YYYY-MM-DD format
+      case 'number':
+          return Number(input); // example: convert input to a number
+      case 'string':
+          return input; // example: convert string to uppercase
+      default:
+          return input;
+  }
+}
 
 //Handle for input change in search  
   const handleInputChange = async(event) => {
     console.log(event.target.value)
-    setSearchInput(event.target.value);
+   
+    setSearchInput(event.target.value)
+   
+    // Transform the input to match the data schema
+   
   };
+
   //Seach handeler
   const searchHandle=async(event)=>{
     event.preventDefault();
     // event.preventDefault(); // Prevent default form submission
-    // setSearch(true);
+    setSearch(true);
     setLoading(true)
-    console.log('Search input:', searchInput)
+    // console.log(search)
+    
+    
     try{
       if(!searchInput){
-        setSearch(false)
+        // setSearch(false)
+
         setLoading(false)
         message.error("Fill the search criteria")
        
       }
       else{
-      // await axios.post('/transactions/get_transaction',{searchInput})
-      // getAlltransaction();
-      setSearch(false)
-      setLoading(false)
-
+        setType1(inferType(searchInput));
+    console.log(type1);
+    setSearchInput( transformInput(searchInput));
       }
+    
 
     }
     catch(error){
