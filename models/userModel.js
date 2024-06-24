@@ -14,6 +14,17 @@ const userSchema= new mongoose.Schema({
         type:String,
         required:[true,'password is required'],
 
+    },
+    password_reset_token:{
+        type:String,
+        default:''
+
+
+    },
+    password_reset_token_expire:{
+        type:Date,
+        default:''
+
     }
 
 },{timestamps:true})

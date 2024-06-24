@@ -148,11 +148,14 @@ const Transaction = () => {
   const getAlltransaction=async()=>{
     // console.log(edit)
     try{
-      console.log('Search input:', searchInput)
+     
+     
+      console.log('Search input:', searchInput,type1)
       const user=JSON.parse(localStorage.getItem('user'));
       const response=await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
       console.log(response.data);
       let res1=response.data;
+       if(type1){
         switch (type1) {
           case 'date':
              res1 = response.data.filter(transaction => {
@@ -175,6 +178,7 @@ const Transaction = () => {
          break;
       
       }
+       }
       setTransaction(res1);
       // setFrequency('365')
       setSearch(false)
