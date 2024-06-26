@@ -13,6 +13,7 @@ const app=express()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
+app.set("view engine","ejs")
 // app.get('/',(req,res)=>{
 //     res.send("<h1>Hello from amit</h1>"
 
