@@ -7,8 +7,9 @@ const connectDb=require("./config/connectDb")
 dotenv.config()
 // rest object 
 connectDb()
-
 const app=express()
+app.use(express.urlencoded({ extended: true }));
+
 // middleware
 app.use(morgan('dev'))
 app.use(express.json())
@@ -27,6 +28,10 @@ app.use('/api/v1/transactions',require('./routes/transactionRoutes'))
 
 const PORT=8080|| process.env.PORT
 //listen
+app.post('/api/v1/test',(req,res)=>{
+    console.log(req.body)
+    res.status(200).json({success:true});
+})
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${
         PORT}`)

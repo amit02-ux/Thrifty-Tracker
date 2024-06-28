@@ -4,15 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    #reset{
+       color: aliceblue;
+      }
+      .container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Adjust as needed */
+      }
+      .form {
+          text-align: center;
+          max-width: 800px; /* Increased width */
+          padding: 40px; /* Increased padding */
+          border: 1px solid #151212;
+          border-radius: 8px;
+          background-color: #010813e6;
+          font-size: 20px; /* Increased font size */
+      }
+      .form input[type="password"] {
+          width: 100%; /* Make inputs full width */
+          margin-bottom: 10px; /* Add spacing between inputs */
+          color: rgb(7, 19, 30);
+          padding: 10px; /* Increase padding for inputs */
+          box-sizing: border-box; /* Include padding and border in element's total width and height */
+      }
+      .form input[type="submit"]{
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+      text-size-adjust: 4px;
+        color: aliceblue;
+        background-color: rgb(0, 64, 255);
+
+      }
+  </style>
 </head>
 <body>
-    <form action="",method="post">
-    <input type="text" name="password" placeholder="password" id="password"/>
-<br/>
-    <input type="text" name="confirm-password" placeholder="confirm-password" id="confirm-password"/>
-    <br/>
-    <input type="submit" value="submit" id="submit"/>
-    </form>
-    
+    <div class="container">
+        <div class="form">
+            <h4 id="reset">Reset Your Password</h4>
+            <form action="http://localhost:8080/api/v1/users/change_password/<%= token %>" method="post">
+                <input type="password" name="password" id="password" placeholder="New Password" initialvaue="none" /><br/>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" /><br/>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
 </body>
 </html>

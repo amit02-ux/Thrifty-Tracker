@@ -4,25 +4,36 @@ const randomstring=require("randomstring")
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+
+// Set views directory
 // const bcryptjs=require("bcryptjs")
 // const jwt=require("jsonwebtoken")
 const crypto = require('crypto');
-app.use(express.urlencoded({extended:false}))
+// app.set('views', path.join(__dirname, 'views')); // Set views directory
+app.set('view engine', 'ejs'); // Set EJS as the view engine
 
 
+app.use(express.urlencoded({ extended: true }));
 const loginController =async(req,res)=>{
     try{
-        console.log("hell");
-        const {email,password}=req.body;
-        const user=await userModel.findOne({email,password});
+        
+        const user = await userModel.findOne({email:req.body.email})
         if(!user){
-            return res.status(404).send({ message: "User not found" });
-
+          
+            return res.status(200).send({message: "User Not Found" ,success:false})
         }
-        res.status(200).json({
-            success:true,
-            user,
-        })
+        const isMatch = await bcrypt.compare(req.body.password,user.password)
+        if(!isMatch){
+           
+        
+            return res.status(200).send({message: "Invalid Email or Password" ,success:false})
+        }
+        const token = jwt.sign({ id: user._id},process.env.JWT_SECRET,{expiresIn:"1d"})
+        res.status(200).send({message:"Login Successfully",success:true,token})
+
         const randomString=randomstring.generate();
         console.log('Random string:',randomString)
         const hash = crypto.createHash('sha256').update(randomString).digest('hex');
@@ -50,12 +61,19 @@ console.log(futureDate.toString());
 const registerController = async(req,res)=>{
     console.log("hello");
     try{
+        const password = req.body.password
+        console.log(req.body.name)
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword =await bcrypt.hash(password,salt)
+        req.body.password = hashedPassword
+        
         const newUser=new userModel(req.body);
         await newUser.save()
         res.status(201).json({
             success:true,
             newUser
         })
+
 
         
     }
@@ -84,7 +102,7 @@ const SendEmail=async(name,email,token)=>{
         const mailoptions={
             from:process.env.UserEmail,
             to:email,
-            subjet:'For Reset password',
+            subject:'For Reset password',
             html:`<p>Hi ${name}, please click the following link to reset your password:</p>
                           <p><a href="http://localhost:8080/api/v1/users/reset_password/${token}">Reset Password</a></p>`
         }
@@ -150,16 +168,85 @@ const forgot_passwordController=async(req,res)=>{
 
 }
 const reset_passwordController=async(req,res)=>{
-    const {token}=req.params;
-    const {password}=req.body;
+ 
+    try{
+        const {token}=req.params;
+        console.log("reset-password");
+    // const {password}=req.body;
+    // console.log("Amit Babu")
+  
     const user=await userModel.find({
         password_reset_token:token});
         console.log(user)
-        console.log("password:",password)
+        // console.log("password:",req)
+        // res.render("index",{token});
+        if(!user){
+           console.log("User does not exit")
+           res.status(200).json({success:true,
+            msg:"User does not exit"
+           })
+        }
+        else{
+            res.render("index",{ token ,status:"Not verified"});
+        }
+          
+        
 
-    console.log("token for reset passwod is:",token)
-res.render("index");
+    // console.log("token for reset passwod is:",token)
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).send("Some thing wrong with reset password")
+    }
+
 }
-module.exports={loginController,registerController,forgot_passwordController,reset_passwordController
+const change_passwordController=async(req,res)=>{
+   
+   
+   try{
+    const {token}=req.params;
+    const {password,confirmPassword}=req.body;
+    const user=await userModel.findOne({
+        password_reset_token:token,password_reset_token_expire:{
+            $gt:Date.now()
+        }})
+      if(!user){
+       
+        console.log("Token expired")
+        res.status(200).json({success:true,
+            msg:"Token has expired"
+        })
+      }
+      else{
+        console.log(password)
+        console.log(req.body)
+        console.log(token)
+        if(password!=confirmPassword){
+            res.status(200).json({success:true,
+                msg:"Password do not match with the confirm-password"
+            })
+        }
+        await userModel.updateOne({ password_reset_token:token},{$set:{
+            password:password
+        }})
+        res.render("index",{token,status:"verified"})
+        // res.status(200).json({success:true,
+        //     msg:"Password changed"
+        // })
+
+      }
+   }
+
+   catch(error){
+    console.log(error)
+    res.status(400).json({success:false,
+        msg:error.message
+    })
+   }
+// console.log(req.body)
+// res.status(200).json({success:true})
+
+}
+module.exports={loginController,registerController,forgot_passwordController,reset_passwordController,change_passwordController
 
 }
