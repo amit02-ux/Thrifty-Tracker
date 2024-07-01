@@ -11,6 +11,7 @@ const getTransactions=async(req,res)=>{
     try{
         
  
+        
 
        
  
@@ -53,6 +54,9 @@ res.status(201).json(transactions)
 const addTransaction=async(req,res)=>{
     try{
         const newTransaction=new transModel(req.body)
+        // const {userid}=req.body;
+        // console.log(userid)
+        // console.log(newTransaction)
        
         await newTransaction.save();
         res.status(201).send("Transaction created")

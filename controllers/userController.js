@@ -31,20 +31,12 @@ const loginController =async(req,res)=>{
         
             return res.status(200).send({message: "Invalid Email or Password" ,success:false})
         }
+     
         const token = jwt.sign({ id: user._id},process.env.JWT_SECRET,{expiresIn:"1d"})
-        res.status(200).send({message:"Login Successfully",success:true,token})
+        res.status(200).send({message:"Login Successfully",success:true,user})
 
-        const randomString=randomstring.generate();
-        console.log('Random string:',randomString)
-        const hash = crypto.createHash('sha256').update(randomString).digest('hex');
-console.log('Hashed String:', hash);
-        const t=Date.now()+10*60*1000;
-        console.log(t);
-        const futureDate = new Date(t);
-console.log(futureDate.toString());
-        await userModel.updateOne({email:req.body.email},{$set:{ password_reset_token:hash, password_reset_token_expire:t}})
-
-
+       
+       
 
     }
     catch(error){
@@ -61,8 +53,16 @@ console.log(futureDate.toString());
 const registerController = async(req,res)=>{
     console.log("hello");
     try{
-        const password = req.body.password
-        console.log(req.body.name)
+        const {email,password} = req.body
+        const user=await userModel.findOne({email:email})
+        if(user){
+            console.log("user already exit")
+            res.status(200).json({success:true,
+                msg:"User already exit"
+            })
+        }
+        else{
+            console.log(req.body.name)
         const salt = await bcrypt.genSalt(10)
         const hashedPassword =await bcrypt.hash(password,salt)
         req.body.password = hashedPassword
@@ -73,6 +73,7 @@ const registerController = async(req,res)=>{
             success:true,
             newUser
         })
+        }
 
 
         
@@ -229,6 +230,10 @@ const change_passwordController=async(req,res)=>{
         await userModel.updateOne({ password_reset_token:token},{$set:{
             password:password
         }})
+        user.password_reset_token=undefined;
+        user.password_reset_token_expire=undefined;
+        user.updatedAt=Date.now();
+        user.save();
         res.render("index",{token,status:"verified"})
         // res.status(200).json({success:true,
         //     msg:"Password changed"

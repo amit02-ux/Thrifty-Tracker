@@ -37,21 +37,34 @@ const Register = () => {
    <>
    <div className='register_page'>
     {loading&&<Spinner/>}
- <Form Layout='vertical' onFinish={submitHandler}>
-    <h1>Register Page</h1>
-    <Form.Item label="Name" name="name">
-  <Input type="text"  placeholder="name"  rules={[{ required: true, message: 'Please enter a name!' }]}/>
+    <Form layout="vertical"  className="register-form" onFinish={submitHandler} style={{ width: '400px', padding: '20px' }}>
+    <h2 className="text-center" style={{ color: 'white' }}>Register</h2>
+
+    <Form.Item label={<span style={{ color: 'white', fontSize: '20px' }}>Name</span>} name="name">
+  <Input type="text"  placeholder="name"   style={{ border: '2px solid black' }} rules={[{ required: true, message: 'Please enter a name!' }]}/>
 </Form.Item>
-<Form.Item label="Email" name="email">
-  <Input type="email"  placeholder="email"  rules={[{ required: true, message: 'Please enter a email!' }]}/>
+<Form.Item label={<span style={{ color: 'white', fontSize: '20px' }}>Email</span>} name="email">
+  <Input type="email"  placeholder="email" style={{ border: '2px solid black' }}  rules={[{ required: true, message: 'Please enter a email!' }]}/>
 </Form.Item>
-<Form.Item label="Password" name="password">
-  <Input type="password" placeholder="password"  rules={[{ required: true, message: 'Please enter a password!' }]}/>
+<Form.Item label={<span style={{ color: 'white', fontSize: '20px' }}>Password</span>} name="password">
+  <Input type="password" placeholder="password" style={{ border: '2px solid black' }}  rules={[{ required: true, message: 'Please enter a password!' }]}/>
 </Form.Item>
-    <div className='d-flex justify-content-between'> 
-        <Link to='/login'>Already register? Click here to login</Link>
-        <button className='btn btn-primary'>Register</button>
+   
+       <div  style={{ textAlign: 'center' }}>
+       <Link to='/login' style={{ color: 'white', fontSize: '20px' }}>
+  Already register? Click here to login
+</Link>
+        
+   
+        <div className="d-flex align-items-center w-150">
+      <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '3px' }} />
+      <span className="px-2" style={{ fontSize: '1.50rem', color:'white'}}>or</span>
+      <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '3px' }} />
     </div>
+    <button className="btn btn-primary mt-2" type="submit" style={{ fontSize: '20px', padding: '8px 30px' }} >
+        Register
+      </button>
+       </div>
  </Form>
    </div>
    </>

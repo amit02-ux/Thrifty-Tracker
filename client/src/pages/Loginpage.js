@@ -1,12 +1,14 @@
 import React,{useState,useEffect} from 'react'
 
-import {Form,Input,message,Modal} from 'antd'
+import {Form,Input,message,Modal,} from 'antd'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import Spinner from '../components/Spinner'
 
 const Loginpage = () => {
+ 
+  
   const navigate=useNavigate();
   const [loading,setLoading]=useState(false)
   const [forgot,setForgot]=useState(false)
@@ -17,23 +19,19 @@ const Loginpage = () => {
           setLoading(true)
           const {data}=await axios.post("/users/login",values)
           setLoading(false)
+         if(data.success){
           message.success("Login successfully")
           console.log("Amit is login successfully")
-          // console.log(data);
-          // console.log(data.password)
-          // console.log(values.email);
-   
-          // localStorage.setItem('user',JSON.stringify(dt));
-          localStorage.setItem('user', JSON.stringify({...data.user, password: ''}))
-
-         
-          // console.log(dt)
-      
-          // message.success("Logout successfully")
+         const user=data.user;
+         localStorage.setItem('user', JSON.stringify(user));
           const myTimeout = setTimeout(() => {
             navigate('/')
         }, 400); 
 
+         }
+         else{
+          message.error("Something went wrong")
+         }
 
         }
         catch(error){
@@ -60,45 +58,70 @@ const Loginpage = () => {
       }
       catch(error){
         console.log(error);
-        message.status(400).send(error);
+        // message.status(400).send(error);
         
       }
+
 
     }
   return (
     <>
-    <div className='login_page'>
+    <div className='login_page' >
       {loading&&<Spinner/>}
-  <Form Layout='vertical' onFinish={submitHandler}>
-     <h1>Login Page</h1>
-    
-     {/* <Form.Item label="Email" name="email">
-         <Input type='email' placeholder="email"/>
-     </Form.Item>
-     <Form.Item label="Password" name="password">
+      <Form layout="vertical"  className="login-form" onFinish={submitHandler} style={{ width: '400px', padding: '20px'}} >
+      <h2 className="text-center" style={{ color: 'white' }}>Login</h2>
 
-     <Input type="password" placeholder="password"required/>
-     </Form.Item>
-     <div className='d-flex justify-content-between'> 
-         <Link to='/register'>If not  registered? Click here to register</Link>
-         <button className='btn btn-primary'>Login</button>
-     </div> */}
-     <Form.Item label="Email" name="email">
-  <Input type="email"  placeholder="email"   rules={[{ required: true, message: 'Please enter a reference!' }]}/>
+    
+    
+      <Form.Item label={<span style={{ color: 'white', fontSize: '20px' }}>Email</span>} name="email">
+  <Input type="email"  placeholder="email" style={{ border: '2px solid black' }}   rules={[{ required: true, message: 'Please enter a reference!' }]}/>
 </Form.Item>
-<Form.Item label="Password" name="password">
-  <Input type="password" placeholder="password"  rules={[{ required: true, message: 'Please enter a password!' }]}/>
+<Form.Item label={<span style={{ color: 'white', fontSize: '20px' }}>Password</span>} name="password">
+  <Input type="password" placeholder="password" style={{ border: '2px solid black' }}   rules={[{ required: true, message: 'Please enter a password!' }]}/>
 </Form.Item>
 <div>
-<Link to="/register" className="m-4" color='black' onClick={()=>{setForgot(true)}}>You have to resister first</Link>
-<Link to="/login" className="m-4" color='black' onClick={()=>{setForgot(true)}}>Forgot_password</Link>
-<button className="btn btn-primary" type="submit">
-  Login
-</button>
+<div className="d-flex justify-content-between">
+  <Link
+    to="/register"
+    style={{  fontSize: '30px' }}
+    // style={{ color: 'black' }} 
+  >
+  <h6> Register</h6>
+  </Link>
+  <Link
+    to="/login"
+    // style={{ color: 'black' }} 
+   onClick={() => setForgot(true)
+    }
+  >
+   
+   <h6> Forgot_password?</h6>
+  </Link>
+</div>
+
+<div className="d-flex flex-column align-items-center">
+  <button className="btn btn-primary mb-2" type="submit"  style={{ fontSize: '20px', padding: '8px 30px' }}>
+    Login
+  </button>
+  
+  <div className="d-flex align-items-center w-100">
+  <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '2px' }} />
+  <span className="px-2" style={{ fontSize: '1.50rem', color:'white' }}>or</span>
+  <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '2px' }} />
+</div>
+  
+  <button className="btn btn-light mt-2" type="submit">
+  
+    Login with Google
+
+  </button>
+  
+</div>
 </div>
   </Form>
   
     </div>
+   
     <Modal title="Forgot-Password" open={forgot}     footer={false} onCancel={()=>{setForgot(false)}}>
       <Form onFinish={Handleforgot_password}>
           <p>Enter the your email,we'll send you a link to reset your password</p>

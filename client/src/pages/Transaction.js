@@ -270,10 +270,11 @@ function transformInput(input) {
 
   }
   const HandleSubmit = async(values) => {
-    console.log(values)
+    // console.log(values)
     try{
       const user=JSON.parse(localStorage.getItem('user'));
       // console.log(user)
+      console.log(user)
     
      if(edit){
       setLoading(true);
@@ -299,7 +300,7 @@ function transformInput(input) {
      else{
       setLoading(true);
     
-      
+      console.log(user)
       await axios.post("/transactions/Add_tran",{userid:user._id,...values})
       // const {data}=await axios.post("/users/login",values)
       setLoading(false);
