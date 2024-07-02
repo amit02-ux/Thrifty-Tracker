@@ -3,7 +3,7 @@ import React,{useState,useEffect} from 'react'
 import {Form,Input,message,Modal,} from 'antd'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
+import { GoogleOutlined ,GooglePlusOutlined} from '@ant-design/icons';
 import Spinner from '../components/Spinner'
 
 const Loginpage = () => {
@@ -110,8 +110,9 @@ const Loginpage = () => {
   <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '2px' }} />
 </div>
   
-  <button className="btn btn-light mt-2" type="submit">
-  
+  <button className="btn btn-primary mt-2" type="submit">
+  {/* <GoogleOutlined /> */}
+  <GooglePlusOutlined />
     Login with Google
 
   </button>

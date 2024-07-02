@@ -1,10 +1,15 @@
 import React from 'react'
 import Layout from '../components/Layout/Layout'
+import Transaction from './Transaction'
 
 const Homepage = () => {
   return (
     <Layout>
-        <h1>Expence tracking System</h1>
+     
+      <h1>Expence tracking System</h1>
+     
+      
+       
     </Layout>
   )
 }

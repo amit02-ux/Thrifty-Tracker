@@ -1,9 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import { message } from 'antd';
+import {  AreaChartOutlined ,PieChartOutlined } from '@ant-design/icons';
+
 
 const Header = () => {
-  const [theme,setTheme]=useState("dark-theme")
+ 
   const navigate=useNavigate()
   const logoutHandler=()=>{
     localStorage.removeItem('user');
@@ -14,16 +16,7 @@ const Header = () => {
 
 
   }
-  const changeMode=()=>{
-    // console.log(theme)
-    if(theme=="light-theme"){
-      setTheme("dark-theme")
-    }
-    else
-    setTheme("light-theme")
-
-
-  }
+  
   const [loginUser,setLoginUser]=useState('')
   
 
@@ -44,13 +37,13 @@ useEffect(() => {
   }
   
   // Apply the theme to the document body
-  document.body.className = theme;
+
   
   // Set the login user if it exists
   if (user) {
     setLoginUser(user);
   }
-}, [theme, setLoginUser]);
+}, [ setLoginUser]);
 
 // Don't forget to include `theme` and `setLoginUser` in the dependency array
 
@@ -74,7 +67,8 @@ useEffect(() => {
           <Link className="nav-link active" to="/transactions">Transactions</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link active" to="/report">Report</Link>
+        <AreaChartOutlined />
+        <PieChartOutlined />
         </li>
        <li>
        <div class="dropdown">
@@ -84,7 +78,7 @@ useEffect(() => {
 
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="#" onClick={logoutHandler}>Logout</a></li>
-    <li><a class="dropdown-item" onClick={changeMode}>Change-Mode</a></li>
+    <li><a class="dropdown-item" >Change-Mode</a></li>
     {/* <li><a class="dropdown-item" href="#">Something else here</a></li> */}
   </ul>
 </div>

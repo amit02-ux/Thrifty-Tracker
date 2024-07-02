@@ -4,7 +4,8 @@ import { Modal, Form, Input, Select,message,Table ,DatePicker,Space} from "antd"
 import axios from "axios";
 import Spinner from '../components/Spinner'
 import moment from "moment";
-import { EditTwoTone ,EditOutlined,FormOutlined,DeleteOutlined  } from '@ant-design/icons';
+import { EditTwoTone ,EditOutlined,FormOutlined,DeleteOutlined ,AreaChartOutlined,UnorderedListOutlined } from '@ant-design/icons';
+import Analytics from "../components/Analytics";
 
 const {RangePicker}=DatePicker
 
@@ -23,6 +24,7 @@ const Transaction = () => {
   const [searchInput, setSearchInput] = useState('');
   const [search,setSearch]=useState(false)
   const [type1,setType1]=useState(null)
+  const [viewdata,setViewdata]=useState('table')
   
   const deleteHandler=async(value)=>{
   const transactionId =value;
@@ -299,7 +301,7 @@ function transformInput(input) {
      }
      else{
       setLoading(true);
-    
+    console.log(frequency+"AMIT")
       console.log(user)
       await axios.post("/transactions/Add_tran",{userid:user._id,...values})
       // const {data}=await axios.post("/users/login",values)
@@ -352,9 +354,10 @@ function transformInput(input) {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Link
-                  </a>
+               <div className="switch-icon">
+               <AreaChartOutlined className={`mx-2 ${viewdata==='table'?'active-icon':'inactive-icon'}`} onClick={()=>setViewdata('table')}/>
+               <UnorderedListOutlined className={`mx-2 ${viewdata==='analytics'?'active-icon':'inactive-icon'}`} onClick={()=>setViewdata('analytics')}/>
+               </div>
                 </li>
                 <li className="nav-item dropdown">
                   <a
@@ -570,7 +573,11 @@ function transformInput(input) {
       </Modal>
       {/* <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
      */}
-      <Table columns={columns} dataSource={transaction}  sortedInfo={sortedInfo} />
+     <div>
+      {viewdata==='table'?( <Table columns={columns} dataSource={transaction}  sortedInfo={sortedInfo} />):(
+        <Analytics allTransaction={transaction}/>
+      )}
+     </div>
  
     </>
   );
