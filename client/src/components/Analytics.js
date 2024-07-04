@@ -94,9 +94,9 @@ function Analytics({allTransaction}) {
       const amount = allTransaction
         .filter(transaction => transaction.type === 'expense' && transaction.category === category)
         .reduce((acc, transaction) => acc + transaction.amount, 0);
-        const percent = IncomeTurnover ? ((amount / ExpenseTurnover) * 100).toFixed(0) : 0;
+        const percent = ExpenseTurnover ? ((amount / ExpenseTurnover) * 100).toFixed(0) : 0;
         const validPercent = Math.min(Math.max(Number(percent), 0), 100);
-      
+      console.log(percent)
       return (
         amount > 0 && (
           <Card type="inner" title={`Category: ${category}`} key={category} className='mt-2'>

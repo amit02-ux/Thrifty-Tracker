@@ -3,11 +3,18 @@ import {Form,Input,message} from 'antd'
 import { Link ,useNavigate} from 'react-router-dom'
 import Spinner from '../components/Spinner'
 import axios from 'axios'
+
 const Register = () => {
     const navigate=useNavigate();
     const [loading,setLoading]=useState(false)
     const submitHandler=async(values)=>{
       try{
+        const {name,password}=values;
+        console.log(password)
+     if(password.length<8){
+      message.error("Password should be of atleat 8 character")
+      return ;
+     }
         setLoading(true)
         console.log("hello")
         await axios.post("/users/register",values)

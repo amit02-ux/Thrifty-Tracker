@@ -54,6 +54,13 @@ const registerController = async(req,res)=>{
     console.log("hello");
     try{
         const {email,password} = req.body
+      if(password.length<8){
+        res.status(200).json({success:true,
+            msg:"Length of the password should be atleast 8"
+        })
+
+      }
+      else{
         const user=await userModel.findOne({email:email})
         if(user){
             console.log("user already exit")
@@ -76,6 +83,7 @@ const registerController = async(req,res)=>{
         }
 
 
+      }
         
     }
     catch(error){
