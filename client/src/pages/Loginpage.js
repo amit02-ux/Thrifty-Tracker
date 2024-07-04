@@ -18,6 +18,7 @@ const Loginpage = () => {
         try{
           setLoading(true)
           const {data}=await axios.post("/users/login",values)
+          console.log(data)
           setLoading(false)
          if(data.success){
           message.success("Login successfully")
@@ -51,7 +52,7 @@ const Loginpage = () => {
         console.log(values);
    await axios.post("/users/forgot_password",values)
 
-   message.success("Reset-password successfully")
+   message.success("Reset password link has been send to your email")
           console.log("Amit is login successfully")
           setForgot(false)
 
@@ -104,18 +105,8 @@ const Loginpage = () => {
     Login
   </button>
   
-  <div className="d-flex align-items-center w-100">
-  <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '2px' }} />
-  <span className="px-2" style={{ fontSize: '1.50rem', color:'white' }}>or</span>
-  <hr className="flex-grow-1" style={{ borderColor: 'white', borderWidth: '2px' }} />
-</div>
   
-  <button className="btn btn-primary mt-2" type="submit">
-  {/* <GoogleOutlined /> */}
-  <GooglePlusOutlined />
-    Login with Google
-
-  </button>
+  
   
 </div>
 </div>

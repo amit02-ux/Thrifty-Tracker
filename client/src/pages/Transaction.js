@@ -584,3 +584,4 @@ function transformInput(input) {
 };
 
 export default Transaction;
+

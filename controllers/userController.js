@@ -227,8 +227,10 @@ const change_passwordController=async(req,res)=>{
                 msg:"Password do not match with the confirm-password"
             })
         }
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword =await bcrypt.hash(password,salt)
         await userModel.updateOne({ password_reset_token:token},{$set:{
-            password:password
+            password:hashedPassword
         }})
         user.password_reset_token=undefined;
         user.password_reset_token_expire=undefined;
@@ -252,6 +254,43 @@ const change_passwordController=async(req,res)=>{
 // res.status(200).json({success:true})
 
 }
-module.exports={loginController,registerController,forgot_passwordController,reset_passwordController,change_passwordController
+const reset1_passwordController=async(req,res)=>{
+
+    try{
+        const {email,password,confirmPassword}=req.body;
+       
+        
+  console.log("reset password")
+  const User=await userModel.findOne({email:email});
+        if(!User){
+            res.status(200).json({success:true,
+                msg:"User does not exit!!"
+            })
+        }
+        else{
+            if(confirmPassword!=password){
+                res.status(200).json({success:true,
+                    msg:"Confirm-password and the Password are different !!"
+                })
+            }
+            else{
+                const salt = await bcrypt.genSalt(10)
+                const hashedPassword =await bcrypt.hash(password,salt)
+                await userModel.updateOne({email:email},{$set:{
+                    password:hashedPassword
+                }})
+                res.status(200).json({success:true,
+                    msg:"Password-Reset Successfully"
+                })
+            }
+        }
+
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).json({success:false,msg:error.message})
+    }
+}
+module.exports={loginController,reset1_passwordController,registerController,forgot_passwordController,reset_passwordController,change_passwordController
 
 }
