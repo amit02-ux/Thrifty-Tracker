@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Loginpage from "./pages/Loginpage";
 import ProtectedRoutes from "./components/protectedroute";
 import Transaction from "./pages/Transaction";
+import Due_transaction from "./pages/Due_transaction";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
   <Route path="/register" element={<Register/>}/>
   <Route path="/login" element={<Loginpage/>}/>
   <Route path="/transactions" element={<ProtectedRoutes><Transaction/></ProtectedRoutes>}/>
+  <Route path="/Due_transaction" element={<ProtectedRoutes><Due_transaction/></ProtectedRoutes>}/>
 </Routes>
   
   </>

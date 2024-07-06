@@ -1,10 +1,10 @@
 import React, { useState ,useEffect} from "react";
 import { Link } from "react-router-dom";
-import { Modal, Form, Input, Select,message,Table ,DatePicker,Space} from "antd";
+import { Modal, Form, Input, Select,message,Table ,DatePicker,Space,theme} from "antd";
 import axios from "axios";
 import Spinner from '../components/Spinner'
 import moment from "moment";
-import { EditTwoTone ,EditOutlined,FormOutlined,DeleteOutlined ,AreaChartOutlined,UnorderedListOutlined } from '@ant-design/icons';
+import { EditTwoTone ,EditOutlined,FormOutlined,DeleteOutlined ,AreaChartOutlined,UnorderedListOutlined,HomeOutlined  } from '@ant-design/icons';
 import Analytics from "../components/Analytics";
 
 const {RangePicker}=DatePicker
@@ -146,7 +146,10 @@ const Transaction = () => {
     },
     
   ];
-  
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   const getAlltransaction=async()=>{
     // console.log(edit)
     try{
@@ -301,7 +304,7 @@ function transformInput(input) {
      }
      else{
       setLoading(true);
-    console.log(frequency+"AMIT")
+    // console.log(frequency+"AMIT")
       console.log(user)
       await axios.post("/transactions/Add_tran",{userid:user._id,...values})
       // const {data}=await axios.post("/users/login",values)
@@ -327,145 +330,162 @@ function transformInput(input) {
    
       <div>
       {loading&&<Spinner/>}
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-          <div className="container-fluid">
-            <a className="navbar-brand" href="#">
-              Transactions
-            </a>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon" />
-            </button>
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/">
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-               <div className="switch-icon">
-               <AreaChartOutlined className={`mx-2 ${viewdata==='table'?'active-icon':'inactive-icon'}`} onClick={()=>setViewdata('table')}/>
-               <UnorderedListOutlined className={`mx-2 ${viewdata==='analytics'?'active-icon':'inactive-icon'}`} onClick={()=>setViewdata('analytics')}/>
-               </div>
-                </li>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Track_of_expences
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item" href="#"
-                      onClick={()=>setFrequency('7')}
-                      >
-                      Last 1  Week
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#"
-                        onClick={()=>setFrequency('30')}>
-                     Last 1  Month
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#"
-                        onClick={()=>setFrequency('365')}
-                      >
-                       Last 1 Year
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#" onClick={()=>setFrequency('custom')} >
-                        Custom
-                      </a>
-                     
-                    </li>
-                    
-                  </ul>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Type
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item" href="#"
-                        onClick={()=>setType('All')}>
-                        All
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#"
-                        onClick={()=>setType('income')}>
-                      
-                        Income
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#"
-                        onClick={()=>setType('expense')}
-                      >
-                        Expences
-                      </a>
-                    </li>
-                    
-                  </ul>
-                </li>
-              </ul>
-             <span>
-             {frequency==='custom'&&<RangePicker value={selecteddate} onChange={(values)=>setSelecteddate(values)}/>}
-             </span>
-              <div className="search mr-2">
-                <form className="d-flex" role="search" onSubmit={searchHandle}>
-                  <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                    value={searchInput}
-                    onChange={handleInputChange}
-                  />
-                  <button className="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
-              </div>
-              <div>
-                {/* <button type="button" className="btn btn-success ml-2px">add_transaction</button> */}
-                <button
-                  type="button"
-                  className="btn btn-success ml-3 mr-2"
-                  onClick={() => setshowModal(true)}
-                >
-                  add_transaction
-                </button>
-              </div>
-            </div>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-2">
+  <div className="container-fluid">
+    <button
+      className="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span className="navbar-toggler-icon" />
+    </button>
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/">
+            <HomeOutlined /> Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <div className="switch-icon">
+            <AreaChartOutlined
+              className={`mx-2 ${viewdata === 'table' ? 'active-icon' : 'inactive-icon'}`}
+              onClick={() => setViewdata('table')}
+            />
+            <UnorderedListOutlined
+              className={`mx-2 ${viewdata === 'analytics' ? 'active-icon' : 'inactive-icon'}`}
+              onClick={() => setViewdata('analytics')}
+            />
           </div>
-        </nav>
+        </li>
+        <li className="nav-item dropdown">
+          <a
+            className="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Track_of_expences
+          </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setFrequency('7')}
+              >
+                Last 1 Week
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setFrequency('30')}
+              >
+                Last 1 Month
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setFrequency('365')}
+              >
+                Last 1 Year
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setFrequency('custom')}
+              >
+                Custom
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li className="nav-item dropdown">
+          <a
+            className="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Type
+          </a>
+          <ul className="dropdown-menu">
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setType('All')}
+              >
+                All
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setType('income')}
+              >
+                Income
+              </a>
+            </li>
+            <li>
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => setType('expense')}
+              >
+                Expenses
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <span className="me-3">
+        {frequency === 'custom' && (
+          <RangePicker value={selecteddate} onChange={(values) => setSelecteddate(values)} />
+        )}
+      </span>
+      <div className="search me-2">
+        <form className="d-flex" role="search" onSubmit={searchHandle}>
+          <input
+            className="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            value={searchInput}
+            onChange={handleInputChange}
+          />
+          <button className="btn btn-outline-light" type="submit">
+            Search
+          </button>
+        </form>
+      </div>
+      <div>
+        <button
+          type="button"
+          className="btn btn-success ms-3 me-2"
+          onClick={() => setshowModal(true)}
+        >
+          Add Transaction
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
       </div>
       <Modal
         title={edit?"Edit-Transaction":"Add-transaction"}
@@ -574,7 +594,51 @@ function transformInput(input) {
       {/* <button className="btn btn-primary" onClick={getAlltransaction}>GET</button>
      */}
      <div>
-      {viewdata==='table'?( <Table columns={columns} dataSource={transaction}  sortedInfo={sortedInfo} />):(
+      {viewdata==='table'?( <div className="card ml-2 mr-2 mt-2 mb-2 border-dark" >
+        <div className="card-body  p-4"> <div style={{  background: colorBgContainer, borderRadius: borderRadiusLG }}>
+              <div className="table-responsive">
+                <table className="table table-secondary table-striped">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                    
+                      <th>Name</th>
+                      <th>Amount</th>
+                      <th>Type</th>
+                      <th>Category</th>
+                      <th>Mode-of-Transaction</th>
+                      <th>References</th>
+                      <th>Description</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transaction.map((transaction) => (
+                      <tr key={transaction._id}>
+                        <td>{moment(transaction.date).format('YYYY-MM-DD')}</td>
+                        <td>{transaction.name}</td>
+                        <td>{transaction.amount}</td>
+                        <td>{transaction.type}</td>
+                        <td>{transaction.category}</td>
+                        <td>{transaction.mode}</td>
+                        <td>{transaction.references}</td>
+                        <td>{transaction.description}</td>
+                        <td>
+                        <button className="btn btn-primary  custom-margin"  onClick={()=>{setEdit(transaction._id);setshowModal(true)}}><FormOutlined/></button>
+           <button className="btn btn-danger  custom-margin" onClick={()=>deleteHandler(transaction._id)}><DeleteOutlined/></button>
+           
+                        
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      </div>
+      </div>
+    
+    ):(
         <Analytics allTransaction={transaction}/>
       )}
      </div>
@@ -584,4 +648,6 @@ function transformInput(input) {
 };
 
 export default Transaction;
+
+
 

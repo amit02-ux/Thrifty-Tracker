@@ -1,5 +1,7 @@
 const transModel=require('../models/transModel')
 
+const Due_tran_Model=require('../models/Due_transModel')
+
 
 const moment=require('moment')
 
@@ -71,6 +73,58 @@ const addTransaction=async(req,res)=>{
     }
 
 }
+const add_Due_Transaction=async(req,res)=>{
+    try{
+        const newTransaction=new Due_tran_Model(req.body)
+        // const {userid}=req.body;
+        // console.log(userid)
+        // console.log(newTransaction)
+       
+        await newTransaction.save();
+        res.status(201).send("Due_Transaction created")
+
+
+    }
+    catch(error){
+        console.log("hii");
+        console.log(error)
+        res.status(400).json(error)
+
+    }
+
+}
+const get_Due_Transaction=async(req,res)=>{
+    try{
+        console.log(req.body)
+       const res1=await Due_tran_Model.find({userid:req.body.userid});
+       console.log(res1);
+    //    res.status(201).json(res);
+    res.status(201).send(res1)
+
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).json({success:false,msg:error.message})
+    }
+
+}
+const delete_Due_Transaction=async(req,res)=>{
+    try{
+        const dueId=req.body.due_id;
+        console.log(dueId)
+        const deletedTransaction = await Due_tran_Model.findOneAndDelete({ _id:dueId });
+        if(deletedTransaction){
+            res.status(200).send("Deleted successfully");
+        }
+        else{
+            res.status(400).send("Transaction not found")
+        }
+
+    }
+    catch(error){
+        res.status(400).json({success:false,msg:error.message})
+    }
+}
 const editTransactions=async(req,res)=>{
     try{
         await transModel.findOneAndUpdate({_id:req.body.transactionsId},req.body.payload);
@@ -137,4 +191,4 @@ const searchTransactions=async(req,res)=>{
     }
 
 }
-module.exports={getTransactions,addTransaction,editTransactions,deletTransactions}
+module.exports={getTransactions,addTransaction,editTransactions,deletTransactions,add_Due_Transaction,delete_Due_Transaction, get_Due_Transaction}

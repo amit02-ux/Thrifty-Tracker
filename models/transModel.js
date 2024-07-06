@@ -7,7 +7,7 @@ const transSchema=mongoose.Schema({
    
     name:{
         type:String,
-        required:[true,'amount is required']
+        required:[true,'name is required']
 
     },
     amount:{
