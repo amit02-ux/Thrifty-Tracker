@@ -1,4 +1,4 @@
-# Healthvider
+# Thrifty-Tracker
 
 Healthvider is a web application that allows patients to easily book their appointments at a particular clinic. This MERN-stack project manages all the information about Doctors, Appointments, Patients, Bookings, and Doctor Schedules.
 
