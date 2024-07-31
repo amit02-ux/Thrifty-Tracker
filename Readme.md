@@ -1,76 +1,94 @@
+# Healthvider
 
-# THE-CASE-FILES
+Healthvider is a web application that allows patients to easily book their appointments at a particular clinic. This MERN-stack project manages all the information about Doctors, Appointments, Patients, Bookings, and Doctor Schedules.
 
-`Empowering Minds, Exposing Truths: Navigating College Life Safely`
+## Description
 
-[Model Link](https://app.eraser.io/workspace/mVCQx3sXs1Q8AInWo81T?origin=share)
+Healthvider streamlines the process of booking medical appointments by providing a user-friendly platform where patients can view doctor profiles, check availability, and book appointments. The application also includes an admin interface for managing doctor approvals and an interface for doctors to update their profiles.
 
-# Welcome to CredLock 🎓
+## Features
 
-CredLock is a thriving haven for college students, fostering a supportive community that nurtures personal growth and academic excellence. Our mission is deeply rooted in empowering students through shared experiences and valuable educational resources.
+- **User Authentication**: Users can sign up and log in with their profiles.
+- **Appointment Management**: Healthvider manages all information related to appointments, doctor fees, and bookings.
+- **Doctor Profiles**: Displays detailed information and descriptions of doctors.
+- **Admin Dashboard**: Admin can approve or reject doctors based on their profiles.
+- **Doctor Availability**: Patients can check the availability of doctors at specific time slots.
+- **Doctor Profile Management**: Doctors can update their profiles.
 
-## About CredLock 🎓
+## Tech Stack
 
-At CredLock, we believe in creating a vibrant community where students are active contributors to each other's learning journey. Here's what sets us apart:
+Healthvider is built using the MERN stack:
 
-### Basic Features
+- **MongoDB**: For the database to store all data related to users, doctors, appointments, and schedules.
+- **Express**: For the backend server to handle API requests and manage the application logic.
+- **React**: For the frontend to create a dynamic and responsive user interface.
+- **Node.js**: For the backend runtime environment to execute JavaScript code server-side.
 
-- **User Registration and Login**: Begin your journey by creating a personal profile on CredLock.
-- **Blog Creation**: Unlock your creativity with intuitive tools to craft and publish your blog posts.
-- **Content Editing**: Customize your content with ease using text formatting options and image upload functionality.
-- **Comment Section**: Foster discussion and interaction with dedicated comment sections for each blog post.
-- **Search Functionality**: Navigate the wealth of content with ease using our search functionality.
-- **Following System**: Build connections and curate your personalized feed by following other bloggers.
+## Installation
 
-### Advanced Features
+To run Healthvider locally, follow these steps:
 
-- **Content Categorization**: Organize your blogs under specific themes for enhanced organization and discovery.
-- **Analytics Tools**: Track the performance of your blog with insights into views, comments, and user demographics.
-- **Social Media Integration**: Share your blog posts effortlessly across popular platforms, amplifying your reach.
+1. **Clone the repository**:
 
-## Join CredLock
+   ```bash
+   git clone https://github.com/jeetuS123/Healthvider.git
+   cd Healthvider
+   ```
 
-Join us at CredLock and embark on a shared adventure of knowledge, connection, and growth. Together, let's make learning a collaborative and enriching experience.
+2. **Install backend dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Install frontend dependencies**:
+
+   ```bash
+   cd client
+   npm install
+   ```
+
+4. **Set up environment variables**:
+   Create a `.env` file in the `Healthvider` directory and add the following environment variables:
+
+   ```plaintext
+   PORT=your_server_running_port
+   DEV_MODE=development
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
+
+5. **Run the application**:
+   Open two terminal windows/tabs:
+
+   - In the first terminal, start the backend server:
+     ```bash
+     npm start
+     ```
+   - In the second terminal, start the frontend development server:
+     ```bash
+     cd client
+     npm start
+     ```
+
+6. **Access the application**:
+   Open your web browser and go to `http://localhost:3000`.
 
 ## Usage
 
-- Create a MongoDB database and obtain your `MongoDB URI` - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
-- Create a Cloudinary account and obtain your `API_KEY API_SECRET` and Create FOLDER_NAME by you won - [Cloudinary](https://cloudinary.com/)
+1. **Sign Up/Login**: Users can create an account or log in with an existing account.
+2. **Book Appointments**: Patients can browse available doctors, view their profiles, and book appointments.
+3. **Manage Profiles**: Doctors can update their profiles with relevant information.
+4. **Admin Actions**: Admin users can approve or reject doctor registrations.
 
-- Get `CLIENT_ID CLIENT_SECRET REFRESH_TOKEN`
-  from [Google Developer Console](https://console.cloud.google.com/welcome?project=eateasy-405214)
+## Contributing
 
-### Env Variables
+We welcome contributions to Healthvider. If you'd like to contribute, please fork the repository and create a pull request with your changes.
 
-create the `.env` file inside server directory and add the variables that has been mentioned in `.env.sample`
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Create a new Pull Request
 
-Change the JWT_SECRET to whatever you want.
-
-### Install Dependencies (frontend & backend)
-
-```
-cd server
-npm install
-cd ..
-cd client
-npm install
-```
-
-### Run
-
-```
-
-# Run backend (:4000) & frontend (:3000)
-cd server
-npm run server
-
-# Run frontend
-npm run start
-```
-
-## Build & Deploy
-
-```
-# Create frontend prod build
-npm run build
-```
+Thank you for using Healthvider!
