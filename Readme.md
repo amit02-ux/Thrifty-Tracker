@@ -1,32 +1,30 @@
 # Thrifty-Tracker
 
-Healthvider is a web application that allows patients to easily book their appointments at a particular clinic. This MERN-stack project manages all the information about Doctors, Appointments, Patients, Bookings, and Doctor Schedules.
+Thrifty-Tracker is a web application that allows users to easily manage  their expences and also keep the track of their transactions. This MERN-stack project manages all the information about Income-transaction,Expensec-transaction, and also keep details of all the due transaction.
 
 ## Description
 
-Healthvider streamlines the process of booking medical appointments by providing a user-friendly platform where patients can view doctor profiles, check availability, and book appointments. The application also includes an admin interface for managing doctor approvals and an interface for doctors to update their profiles.
-
+Thrifty-Tracker streamlines the process of managing expences by providing a user-friendly platform where users can view income-transaction,expense-transaction , and Due-transaction.
 ## Features
 
 - **User Authentication**: Users can sign up and log in with their profiles.
-- **Appointment Management**: Healthvider manages all information related to appointments, doctor fees, and bookings.
-- **Doctor Profiles**: Displays detailed information and descriptions of doctors.
-- **Admin Dashboard**: Admin can approve or reject doctors based on their profiles.
-- **Doctor Availability**: Patients can check the availability of doctors at specific time slots.
-- **Doctor Profile Management**: Doctors can update their profiles.
+- **Transaction Management**: Thrifty_tracker manages all information related to transaction.
+- **Reset Password/Forgot Password**: User can reset their password.
+- **Search**:User can search for the transaction based on different criteria likes name,date,category.
+- **Delete/Update**: User can update and delete their transaction.
 
 ## Tech Stack
 
-Healthvider is built using the MERN stack:
+Thrifty-Tracker is built using the MERN stack:
 
-- **MongoDB**: For the database to store all data related to users, doctors, appointments, and schedules.
+- **MongoDB**: For the database to store all data related to users, transaction,due-transaction.
 - **Express**: For the backend server to handle API requests and manage the application logic.
 - **React**: For the frontend to create a dynamic and responsive user interface.
 - **Node.js**: For the backend runtime environment to execute JavaScript code server-side.
 
 ## Installation
 
-To run Healthvider locally, follow these steps:
+To run Thrifty-Tracker locally, follow these steps:
 
 1. **Clone the repository**:
 
