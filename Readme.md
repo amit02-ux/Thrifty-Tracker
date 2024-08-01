@@ -29,8 +29,8 @@ To run Thrifty-Tracker locally, follow these steps:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/jeetuS123/Healthvider.git
-   cd Healthvider
+https://github.com/amit02-ux/Thrifty-Tracker.git
+   cd Thrify_tracker
    ```
 
 2. **Install backend dependencies**:
@@ -47,7 +47,7 @@ To run Thrifty-Tracker locally, follow these steps:
    ```
 
 4. **Set up environment variables**:
-   Create a `.env` file in the `Healthvider` directory and add the following environment variables:
+   Create a `.env` file in the `Thrifty-Tracker` directory and add the following environment variables:
 
    ```plaintext
    PORT=your_server_running_port
@@ -75,13 +75,13 @@ To run Thrifty-Tracker locally, follow these steps:
 ## Usage
 
 1. **Sign Up/Login**: Users can create an account or log in with an existing account.
-2. **Book Appointments**: Patients can browse available doctors, view their profiles, and book appointments.
-3. **Manage Profiles**: Doctors can update their profiles with relevant information.
-4. **Admin Actions**: Admin users can approve or reject doctor registrations.
+2. **Add transaction**:User can add the transaction.
+3. **Manage transaction**: user can update their transaction with relevant information.
+
 
 ## Contributing
 
-We welcome contributions to Healthvider. If you'd like to contribute, please fork the repository and create a pull request with your changes.
+We welcome contributions to Thrifty-Tracker. If you'd like to contribute, please fork the repository and create a pull request with your changes.
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/your-feature`)
@@ -89,4 +89,4 @@ We welcome contributions to Healthvider. If you'd like to contribute, please for
 4. Push to the branch (`git push origin feature/your-feature`)
 5. Create a new Pull Request
 
-Thank you for using Healthvider!
+Thank you for using Thrifty-Tracker!
