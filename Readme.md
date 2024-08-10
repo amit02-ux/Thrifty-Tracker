@@ -30,7 +30,7 @@ To run Thrifty-Tracker locally, follow these steps:
 
    ```bash
       https://github.com/amit02-ux/Thrifty-Tracker.git
-    cd Thrify_tracker
+    cd Thrifty_tracker
    ```
 
 2. **Install backend dependencies**:
