@@ -401,8 +401,17 @@ const Homepage = () => {
 
   const getDue_transaction = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const response = await axios.post("/transactions/get_due_transaction", { userid: user._id });
+ 
+     const response = await axios.post(
+  "/transactions/get_due_transaction",
+
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       if (dateover) {
         const currentDate = new Date();
         const res1 = response.data.filter(duetransaction => new Date(duetransaction.date) < currentDate);
@@ -421,7 +430,7 @@ const Homepage = () => {
 
   const logoutHandler = () => {
     console.log("Hijhjknkndf");
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     message.success("Logout successfully");
     setTimeout(() => {
       navigate('/login');
@@ -431,7 +440,19 @@ const Homepage = () => {
   const Due_Transaction = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
-      await axios.post("/transactions/add_due_transaction", { userid: user._id, ...values });
+  const response = await axios.post(
+  "/transactions/add_due_transaction",
+  {
+ 
+    ...values,
+  },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       setAddDue(false);
       message.success("Due_transaction add successfully");
     } catch (error) {
@@ -450,7 +471,16 @@ const Homepage = () => {
       if (!due_id) {
         message.error("NO such transaction exit");
       } else {
-        const det = await axios.post('/transactions/deletdue_transaction', { due_id });
+      const det = await axios.post(
+  '/transactions/deletdue_transaction',
+  { due_id },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
         setDueDelete(false);
         if (det) {
           message.success("Deleted successfully");
@@ -467,11 +497,23 @@ const Homepage = () => {
   const submitHandler = async (values) => {
     console.log(values);
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
+      
       const email = user.email;
-      await axios.post('/users/reset1_password', { ...values, email });
+     const response = await axios.post(
+  '/users/reset1_password',
+  {
+    ...values,
+    email,
+  },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       setResetPassword(false);
-      localStorage.removeItem('user');
+      localStorage.removeItem('token');
       setTimeout(() => {
         navigate('/login');
       }, 400);
