@@ -38,8 +38,17 @@ const Transaction = () => {
       setDelete(false)
     }
     else{
-      const det = await axios.post('/transactions/delet_transaction',{transactionId})
-     
+    
+     const det = await axios.post(
+  '/transactions/delet_transaction',
+  { transactionId },  // This is the body of the request
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
 
       if(det){
         message.success("Deleted successfully")
@@ -157,7 +166,22 @@ const Transaction = () => {
      
       console.log('Search input:', searchInput,type1)
       const user=JSON.parse(localStorage.getItem('user'));
-      const response=await axios.post('/transactions/get_transaction',{userid:user._id,frequency,type,selecteddate})
+
+      const response = await axios.post(
+  '/transactions/get_transaction',
+  {
+    userid: user._id,
+    frequency,
+    type,
+    selecteddate,
+  },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       console.log(response.data);
       let res1=response.data;
        if(type1){
@@ -285,13 +309,22 @@ function transformInput(input) {
       setLoading(true);
     
       
-      await axios.post("/transactions/edit_transaction",{
-        payload:{...values,
-          userid:user._id
-          
-        },
-        transactionsId:edit._id
-      })
+    const response = await axios.post(
+  "/transactions/edit_transaction",
+  {
+    payload: {
+      ...values,
+      
+    },
+    transactionsId: edit._id,
+  },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       // const {data}=await axios.post("/users/login",values)
       setLoading(false);
      
@@ -306,7 +339,19 @@ function transformInput(input) {
       setLoading(true);
     // console.log(frequency+"AMIT")
       console.log(user)
-      await axios.post("/transactions/Add_tran",{userid:user._id,...values})
+      const response = await axios.post(
+  "/transactions/Add_tran",
+  {
+
+    ...values,
+  },
+  {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }
+);
+
       // const {data}=await axios.post("/users/login",values)
       setLoading(false);
      
