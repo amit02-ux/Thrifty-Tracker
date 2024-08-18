@@ -23,8 +23,9 @@ const Loginpage = () => {
          if(data.success){
           message.success("Login successfully")
           console.log("Amit is login successfully")
-         const user=data.user;
-         localStorage.setItem('user', JSON.stringify(user));
+             window.location.reload();
+         // const user=data.user;
+        localStorage.setItem("token", res.data.token);
           const myTimeout = setTimeout(() => {
             navigate('/')
         }, 400); 
