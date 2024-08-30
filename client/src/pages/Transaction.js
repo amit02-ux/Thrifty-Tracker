@@ -165,7 +165,7 @@ const Transaction = () => {
      
      
       console.log('Search input:', searchInput,type1)
-      const user=JSON.parse(localStorage.getItem('user'));
+      const token=JSON.parse(localStorage.getItem('token'));
 
       const response = await axios.post(
   '/transactions/get_transaction',
@@ -301,7 +301,7 @@ function transformInput(input) {
   const HandleSubmit = async(values) => {
     // console.log(values)
     try{
-      const user=JSON.parse(localStorage.getItem('user'));
+      const token=JSON.parse(localStorage.getItem('token'));
       // console.log(user)
       console.log(user)
     
