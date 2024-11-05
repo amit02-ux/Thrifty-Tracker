@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var status = '<%- JSON.stringify(status) %>';
+  
+        if (JSON.parse(status) == "verified") {
+          if (confirm("Do u want to login?")) {
+            window.location.href = "http://localhost:3000/login";
+          }
+        }
+      </script>
+    <style>
+      /* *{
+        background-color: hsl(120, 19%, 94%);
+      } */
+    #reset{
+       color: aliceblue;
+       margin-bottom: 50px;
+      }
+      .container {
+          display: flex;
+          justify-content: center;
+          background-color: none;
+          align-items: center;
+          height: 100vh; /* Adjust as needed */
+      }
+      .form {
+          text-align: center;
+          max-width: 800px; /* Increased width */
+          padding: 60px; /* Increased padding */
+          border: 1px solid #151212;
+          border-radius: 8px;
+          background-color: #ec0c0ce6;
+          background-image: linear-gradient(135deg, rgb(255, 0, 72), rgb(136, 255, 0));
+          font-size: 20px; /* Increased font size */
+      }
+      .form input[type="password"] {
+          width: 100%; /* Make inputs full width */
+          margin-bottom: 10px; /* Add spacing between inputs */
+          background-color: aliceblue;
+          color: rgb(7, 19, 30);
+          padding: 14px; /* Increase padding for inputs */
+          box-sizing: border-box; /* Include padding and border in element's total width and height */
+      }
+      .form input[type="submit"]{
+        width: 100%;
+        margin-top: 20px;
+        padding: 14px;
+        background-color: aliceblue;
+      text-size-adjust: 4px;
+        color: aliceblue;
+        background-color: rgb(0, 64, 255);
+
+      }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form">
+            <h4 id="reset">Reset Your Password</h4>
+            <form action="http://localhost:8080/api/v1/users/change_password/<%= token %>" method="post">
+                <input type="password" name="password" id="password" placeholder="New Password" initialvaue="none" /><br/>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" /><br/>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</body>
+</html>

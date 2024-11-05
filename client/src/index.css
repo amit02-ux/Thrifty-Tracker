@@ -1,0 +1,74 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.content{
+  height: 80vh;
+}
+.register_page{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(135deg, red, rgb(0, 72, 255));
+    /* background-image: linear-gradient(135deg, red, yellow); */
+  
+}
+.login_page{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: linear-gradient(135deg,red, rgb(8, 96, 236));
+
+}
+.navbar-brand {
+  /* font-family: 'Roboto', Helvetica, sans-serif; Example of font-family */
+  /* font-family: ui-serif; */
+  /* font-family: "Lucida Handwriting", cursive; */
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 2rem; /* Responsive font size for larger screens */
+  font-weight: bold;
+  text-align: center; /* Center align the text */
+  margin-top: 1rem; /* Example margin top */
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+      font-size: 2rem; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+      font-size: 1.5rem; /* Further adjust font size for very small screens */
+  }
+}
+.custom-margin{
+  margin-left: 1px;
+  /* margin-right: 1px; */
+}
+.login-form{
+  
+  /* background-image: linear-gradient(135deg, red, rgb(0, 72, 255)); */
+
+}
+.anticon svg{
+  font-size: 25px;
+  cursor: pointer;
+}
+.active-icon{
+  color: black;
+}
+.inactive-icon{
+  color: gray;
+}
+.switch-icon{
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+
+
