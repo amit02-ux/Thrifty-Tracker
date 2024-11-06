@@ -47,7 +47,7 @@ const Homepage = () => {
 
   const addDueTransaction = async (values) => {
     try {
-      await axios.post("/transactions/add_due_transaction", values, {
+      await axios.post("/api/v1/transactions/add_due_transaction", values, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -71,7 +71,7 @@ const Homepage = () => {
         message.error("No such transaction exists");
         return;
       }
-      await axios.post('/transactions/deletdue_transaction', { due_id },{
+      await axios.post('/api/v1/transactions/deletdue_transaction', { due_id },{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -88,7 +88,7 @@ const Homepage = () => {
   const submitHandler = async (values) => {
     try {
      
-      await axios.post('/users/reset1_password', { ...values },{
+      await axios.post('/api/v1/users/reset1_password', { ...values },{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

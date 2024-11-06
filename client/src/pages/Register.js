@@ -10,6 +10,7 @@ const Register = () => {
     const submitHandler=async(values)=>{
       try{
         const {name,password}=values;
+     
         console.log(password)
      if(password.length<8){
       message.error("Password should be of atleat 8 character")
@@ -17,9 +18,10 @@ const Register = () => {
      }
         setLoading(true)
         console.log("hello")
-        await axios.post("/users/register",values)
+     const res=   await axios.post("/users/register",values)
         setLoading(false)
-        message.success("Registration successful")
+        // console.log(res.data.msg)
+        message.success(res.data.msg );
      
         navigate("/login")
 
