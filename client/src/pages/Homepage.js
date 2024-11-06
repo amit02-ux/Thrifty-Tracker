@@ -20,7 +20,7 @@ const Homepage = () => {
 
   const getDueTransaction = async () => {
     try {
-      const response = await axios.post("/transactions/get_due_transaction", null, {
+      const response = await axios.post("/api/v1/transactions/get_due_transaction", null, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
