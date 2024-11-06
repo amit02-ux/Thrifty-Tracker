@@ -39,7 +39,7 @@ const Transaction = () => {
     }
     else{
       const det = await axios.post(
-        '/transactions/delet_transaction',
+        '/api/v1/transactions/delet_transaction',
         { transactionId }, // Data to be sent
         {
           headers: {
@@ -164,7 +164,7 @@ const Transaction = () => {
      
       console.log('Search input:', searchInput,type1)
       const user=JSON.parse(localStorage.getItem('user'));
-      const response=await axios.post('/transactions/get_transaction',{frequency,type,selecteddate}, {
+      const response=await axios.post('/api/v1/transactions/get_transaction',{frequency,type,selecteddate}, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -297,7 +297,7 @@ function transformInput(input) {
     
       
       const det = await axios.post(
-        "/transactions/edit_transaction",
+        "/api/v1/transactions/edit_transaction",
         {
           payload: {
             ...values,
