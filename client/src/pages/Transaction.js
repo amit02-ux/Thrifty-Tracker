@@ -326,7 +326,7 @@ function transformInput(input) {
     // console.log(frequency+"AMIT")
     const token = localStorage.getItem("token");
      
-      await axios.post("/transactions/Add_tran", 
+      await axios.post("/api/v1/transactions/Add_tran", 
         {  ...values }, // Request payload
         {
           headers: {
