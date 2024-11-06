@@ -13,7 +13,7 @@ const getTransactions=async(req,res)=>{
     try{
     console.log("amit")
   const  transactions =await transModel.find({
-
+   userid,
         ...(frequency!=='custom'?{
             date:{
                 $gt:moment().subtract(Number(frequency),"d").toDate(),
