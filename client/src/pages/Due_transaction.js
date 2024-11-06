@@ -17,12 +17,3 @@ const Due_transaction = ({ dueDate }) => {
 };
 
 export default Due_transaction;
-// import React from 'react'
-
-// const Due_transaction = () => {
-//   return (
-//     <div>Due_transaction</div>
-//   )
-// }
-
-// export default Due_transaction
